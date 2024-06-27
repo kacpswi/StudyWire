@@ -44,6 +44,7 @@ namespace StudyWire.Infrastructure.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<ErrorHandlingMiddleware>();
+            services.AddCors();
 
 
             return services;

@@ -17,6 +17,7 @@ namespace StudyWire.API.Controllers
             _adminService = adminService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("users")]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetAllUsers()
