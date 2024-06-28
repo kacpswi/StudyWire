@@ -1,11 +1,78 @@
-<h1>{{title}}</h1>
+<app-nav></app-nav>
 
-<ul>
-  @for (user of users; track user.id)
-  {
-    <li>
-      {{user.id}} - {{user.name}}
-    </li>
-  }
+<div class="container">
+  <ul>
+    @for (user of users; track user.id)
+    {
+      <li>
+        {{user.id}} - {{user.name}}
+      </li>
+    }
+  </ul>
+</div>
 
-</ul>
+<div class="d-flex align-items-center py-4">
+  <main class="form-singin m-auto" style="width: 300px;">
+    <form>
+      <h1 class="h2 mb-3 fw-normal">Login</h1>
+      <div class="form-floating mb-1">
+        <input type="email" class="form-control" id="floatingInput">
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="floatingPassword">
+        <label for="floatingInput">Password</label>
+      </div>
+      <button class="btn btn-primary w-100 py-2" type="submit">Login</button>
+      <label>Don't have an account?</label> <a class="ms-2" href="#">Signup</a>   
+    </form>
+  </main>
+</div>
+
+<div class="d-flex align-items-center py-4">
+  <main class="form-singin m-auto" style="width: 300px;">
+    <form>
+      <h1 class="h2 mb-3 fw-normal">Register</h1>
+      <div class="form-floating mb-1">
+        <input type="email" class="form-control" id="floatingInput">
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="password" class="form-control" id="floatingPassword">
+        <label for="floatingInput">Password</label>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="password" class="form-control" id="floatingPassword">
+        <label for="floatingInput">Confirm Password</label>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="email" class="form-control" id="floatingInput">
+        <label for="floatingInput">Name</label>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="email" class="form-control" id="floatingInput">
+        <label for="floatingInput">Surename</label>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="email" class="form-control" id="floatingInput">
+        <label for="floatingInput">Phone number</label>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="email" class="form-control" id="floatingInput">
+        <label for="floatingInput">City</label>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="email" class="form-control" id="floatingInput">
+        <label for="floatingInput">Postal Code</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="floatingInput">
+        <label for="floatingInput">Street</label>
+      </div>
+      <button class="btn btn-primary w-100 py-2" type="submit">Register</button>
+      <label>Already have an account?</label> <a class="ms-2" href="#">Login</a>   
+    </form>
+  </main>
+</div>
+
+
