@@ -16,7 +16,7 @@ namespace StudyWire.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> LoginUser([FromBody] LoginUserDto loginUserDto)
+        public async Task<ActionResult<ReturnLoginUserDto>> LoginUser([FromBody] LoginUserDto loginUserDto)
         {
             var result = await _userService.LoginUserAsync(loginUserDto);
             return Ok(result);

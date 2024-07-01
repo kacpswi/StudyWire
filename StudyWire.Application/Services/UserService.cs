@@ -23,7 +23,7 @@ namespace StudyWire.Application.Services
             _tokenService = tokenService;
         }
 
-        public async Task<string> LoginUserAsync(LoginUserDto loginUserDto)
+        public async Task<ReturnLoginUserDto> LoginUserAsync(LoginUserDto loginUserDto)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginUserDto.Email);
 
@@ -39,7 +39,16 @@ namespace StudyWire.Application.Services
                 throw new BadRequestException("Invalid username or password.");
             }
 
-            return await _tokenService.CreateToken(user);
+            string token = await _tokenService.CreateToken(user);
+
+            var userDto = new ReturnLoginUserDto()
+            {
+                Name = user.Name,
+                Surename = user.Surename,
+                Token = token,
+            };
+
+            return userDto;
         }
 
         public async Task RegisterUserAsync(RegisterUserDto registerUserDto)
