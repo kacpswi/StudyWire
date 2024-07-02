@@ -4,10 +4,9 @@ using StudyWire.Application.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using StudyWire.Infrastructure;
 using System.Data;
-using StudyWire.Domain.Entities.User;
 using StudyWire.Infrastructure.Presistence;
 using Microsoft.EntityFrameworkCore;
-
+using StudyWire.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using StudyWire.Application.Exceptions;
 using StudyWire.Application.Services.Interfaces;
-using StudyWire.Domain.Entities.User;
+using StudyWire.Domain.Entities;
 using StudyWire.Domain.Interfaces;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StudyWire.Domain.Entities.User;
+using StudyWire.Domain.Entities;
 using StudyWire.Domain.Interfaces;
 using StudyWire.Infrastructure.Presistence;
 using System;
@@ -24,7 +24,7 @@ namespace StudyWire.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AppUser> GetUserByIdAsync(int id)
+        public async Task<AppUser?> GetUserByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }

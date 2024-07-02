@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using StudyWire.Infrastructure.Presistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using StudyWire.Domain.Entities.User;
 using StudyWire.Application.Services;
 using StudyWire.Application.Services.Interfaces;
 using StudyWire.Application.Middlewares;
@@ -12,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using StudyWire.Domain.Interfaces;
 using StudyWire.Infrastructure.Repositories;
+using StudyWire.Domain.Entities;
 
 namespace StudyWire.Infrastructure.Extensions
 {

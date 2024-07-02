@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using StudyWire.Domain.Entities.User;
+using StudyWire.Domain.Entities;
 using StudyWire.Infrastructure.Presistence;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using StudyWire.Domain.Entities.User;
+﻿using StudyWire.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
