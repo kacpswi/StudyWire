@@ -1,0 +1,32 @@
+@if(!registerMode)
+{
+    @if(!loginMode){
+        <div class="container-fluid mt-5">
+            <div style="text-align: center;">
+                <p>Welcome to StudyWire</p>
+                @if(!accountService.currentUser()){
+                    <p class="lead">To use this page you need to have an account and be loged in</p>
+                    <div>
+                        <button class="btn btn-primary me-2" (click)="loginToggle()">Login</button>
+                        <button class="btn btn-primary me-2" (click)="registerToggle()">Register</button>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    @else {
+        <app-login
+            (cancelLogin)="cancelLoginMode($event)"
+            (startRegister)="loginToRegister($event)"
+        ></app-login>
+    }
+}
+@else
+{
+    <app-register
+        (cancelRegister)="cancelRegisterMode($event)"
+        (startLogin)="registerToLogin($event)"
+    ></app-register>
+}
+
+
