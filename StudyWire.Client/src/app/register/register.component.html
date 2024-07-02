@@ -1,45 +1,46 @@
 <div class="d-flex align-items-center py-4">
     <main class="form-singin m-auto" style="width: 300px;">
-      <form>
-        <h1 class="h2 mb-3 fw-normal">Register</h1>
+      <form #registerForm="ngForm" (ngSubmit)="register()">
+        <h1 class="h2 mb-3 fw-normal">Sign up</h1>
         <div class="form-floating mb-1">
-          <input type="email" class="form-control" id="floatingInput">
+          <input type="text" class="form-control" name="userEmail" [(ngModel)]="model.email">
           <label for="floatingInput">Email address</label>
         </div>
         <div class="form-floating mb-1">
-          <input type="password" class="form-control" id="floatingPassword">
+          <input type="password" class="form-control" name="userPassword" [(ngModel)]="model.password">
           <label for="floatingInput">Password</label>
         </div>
         <div class="form-floating mb-1">
-          <input type="password" class="form-control" id="floatingPassword">
+          <input type="password" class="form-control"  name="userConfirmPassword" [(ngModel)]="model.confirmPassword">
           <label for="floatingInput">Confirm Password</label>
         </div>
         <div class="form-floating mb-1">
-          <input type="email" class="form-control" id="floatingInput">
+          <input type="text" class="form-control" name="userName" [(ngModel)]="model.name">
           <label for="floatingInput">Name</label>
         </div>
         <div class="form-floating mb-1">
-          <input type="email" class="form-control" id="floatingInput">
+          <input type="text" class="form-control" name="userSurename" [(ngModel)]="model.surename">
           <label for="floatingInput">Surename</label>
         </div>
         <div class="form-floating mb-1">
-          <input type="email" class="form-control" id="floatingInput">
+          <input type="text" class="form-control" name="userPhone" [(ngModel)]="model.phone">
           <label for="floatingInput">Phone number</label>
         </div>
         <div class="form-floating mb-1">
-          <input type="email" class="form-control" id="floatingInput">
+          <input type="text" class="form-control" name="userCity" [(ngModel)]="model.city">
           <label for="floatingInput">City</label>
         </div>
         <div class="form-floating mb-1">
-          <input type="email" class="form-control" id="floatingInput">
+          <input type="text" class="form-control" name="userPostalCode" [(ngModel)]="model.postalCode">
           <label for="floatingInput">Postal Code</label>
         </div>
         <div class="form-floating mb-3">
-          <input type="email" class="form-control" id="floatingInput">
+          <input type="text" class="form-control" name="userStreet" [(ngModel)]="model.street">
           <label for="floatingInput">Street</label>
         </div>
-        <button class="btn btn-primary w-100 py-2" type="submit">Register</button>
-        <label>Already have an account?</label> <a class="ms-2" href="#">Login</a>   
+        <button class="btn btn-primary py-2 me-2" style="width: 145px;" type="submit">Register</button>
+        <button class="btn btn-primary py-2" style="width: 147px;" (click)="cancel()" type="button">Cancel</button>
+        <label>Already have an account?</label> <a class="ms-2" (click)="toggleToLogin()">Login</a>   
       </form>
     </main>
   </div>

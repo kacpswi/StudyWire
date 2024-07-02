@@ -51,7 +51,7 @@ namespace StudyWire.Application.Services
             return userDto;
         }
 
-        public async Task RegisterUserAsync(RegisterUserDto registerUserDto)
+        public async Task<ReturnLoginUserDto> RegisterUserAsync(RegisterUserDto registerUserDto)
         {
             if (await UserExists(registerUserDto.Email))
             {
@@ -96,6 +96,14 @@ namespace StudyWire.Application.Services
             }
 
             await _userManager.AddToRoleAsync(user, "Guest");
+            var token = await _tokenService.CreateToken(user);
+            return new ReturnLoginUserDto()
+            {
+                Name = user.UserName,
+                Surename = user.Surename,
+                Token = token
+            };
+
 
         }
 

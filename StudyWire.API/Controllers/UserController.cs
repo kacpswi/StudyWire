@@ -23,10 +23,10 @@ namespace StudyWire.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> RegisterUser([FromBody] RegisterUserDto dto)
+        public async Task<ActionResult<ReturnLoginUserDto>> RegisterUser([FromBody] RegisterUserDto dto)
         {
-            await _userService.RegisterUserAsync(dto);
-            return Ok();
+            var result = await _userService.RegisterUserAsync(dto);
+            return Ok(result);
         }
     }
 }

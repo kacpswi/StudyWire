@@ -10,6 +10,6 @@ namespace StudyWire.Application.Services.Interfaces
     public interface IUserService
     {
         public Task<ReturnLoginUserDto> LoginUserAsync(LoginUserDto loginUserDto);
-        public Task RegisterUserAsync(RegisterUserDto registerUserDto);
+        public Task<ReturnLoginUserDto> RegisterUserAsync(RegisterUserDto registerUserDto);
     }
 }

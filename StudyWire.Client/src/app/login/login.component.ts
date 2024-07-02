@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,18 +11,28 @@ import { AccountService } from '../_services/account.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  private accountService = inject(AccountService)
-  loggenIn = false;
+  private router = inject(Router);
+  accountService = inject(AccountService)
+  cancelLogin = output<boolean>();
+  startRegister = output<boolean>();
   model: any = {};
 
   login()
   {
     this.accountService.login(this.model).subscribe({
-      next: response => {
-        console.log(response);
-        this.loggenIn = true;
+      next: _ => {
+        this.cancel()
+        this.router.navigateByUrl("/news")
       },
       error: error => console.log(error)
     })
+  }
+
+  toggleToRegister(){
+    this.startRegister.emit(true);
+  }
+
+  cancel(){
+    this.cancelLogin.emit(false);
   }
 }
