@@ -26,7 +26,6 @@ namespace StudyWire.Infrastructure.Repositories
         public async Task DeleteNewsAsync(News news)
         {
             _context.News.Remove(news);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<News?>> GetAllNewsAsync()
@@ -34,9 +33,10 @@ namespace StudyWire.Infrastructure.Repositories
             return await _context.News.ToListAsync();
         }
 
-        public async Task<IEnumerable<News?>> GetAllNewsBySchoolAsync(int schoolId)
+        public async Task<IEnumerable<News?>> GetAllNewsBySchoolIdAsync(int schoolId)
         {
-            return await _context.News.Where(n => n.Id == schoolId).ToListAsync();
+            var newses = await _context.News.Where(n => n.SchoolId == schoolId).ToListAsync();
+            return newses;
         }
 
         public async Task<News?> GetNewsByIdAsync(int newsId)
@@ -47,7 +47,11 @@ namespace StudyWire.Infrastructure.Repositories
         public async Task UpdateNews(News news)
         {
             _context.News.Update(news);
-            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> Save()
+        {
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

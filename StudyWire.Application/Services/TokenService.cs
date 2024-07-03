@@ -30,7 +30,15 @@ namespace StudyWire.Application.Services
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                
             };
+
+            if (user.SchoolId != null)
+            {
+                claims.Add(
+                    new Claim("SchoolId", user.SchoolId.ToString())
+                    );
+            }
 
             var roles = await _userManager.GetRolesAsync(user);
 

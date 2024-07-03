@@ -1,6 +1,7 @@
 import { Component, inject, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,6 +12,7 @@ import { AccountService } from '../_services/account.service';
 })
 export class RegisterComponent {
   private accountService = inject(AccountService);
+  private router = inject(Router);
   cancelRegister = output<boolean>();
   startLogin = output<boolean>();
   model: any = {}
@@ -19,6 +21,7 @@ export class RegisterComponent {
     this.accountService.register(this.model).subscribe({
       next: _ =>{
         this.cancel();
+        this.router.navigateByUrl("/news");
       },
       error: error => {
         console.log(error);

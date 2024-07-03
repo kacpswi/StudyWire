@@ -270,7 +270,7 @@ namespace StudyWire.Infrastructure.Migrations
 
                     b.HasIndex("SchoolId");
 
-                    b.ToTable("News");
+                    b.ToTable("News", (string)null);
                 });
 
             modelBuilder.Entity("StudyWire.Domain.Entities.School", b =>
@@ -287,7 +287,7 @@ namespace StudyWire.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Schools");
+                    b.ToTable("Schools", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -347,7 +347,7 @@ namespace StudyWire.Infrastructure.Migrations
                         .WithMany("Members")
                         .HasForeignKey("SchoolId");
 
-                    b.OwnsOne("StudyWire.Domain.Entities.Address", "Address", b1 =>
+                    b.OwnsOne("StudyWire.Domain.Entities.AppUser.Address#StudyWire.Domain.Entities.Address", "Address", b1 =>
                         {
                             b1.Property<int>("AppUserId")
                                 .HasColumnType("int");
@@ -366,7 +366,7 @@ namespace StudyWire.Infrastructure.Migrations
 
                             b1.HasKey("AppUserId");
 
-                            b1.ToTable("AspNetUsers");
+                            b1.ToTable("AspNetUsers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AppUserId");
@@ -391,7 +391,7 @@ namespace StudyWire.Infrastructure.Migrations
 
             modelBuilder.Entity("StudyWire.Domain.Entities.School", b =>
                 {
-                    b.OwnsOne("StudyWire.Domain.Entities.Address", "Address", b1 =>
+                    b.OwnsOne("StudyWire.Domain.Entities.School.Address#StudyWire.Domain.Entities.Address", "Address", b1 =>
                         {
                             b1.Property<int>("SchoolId")
                                 .HasColumnType("int");
@@ -410,7 +410,7 @@ namespace StudyWire.Infrastructure.Migrations
 
                             b1.HasKey("SchoolId");
 
-                            b1.ToTable("Schools");
+                            b1.ToTable("Schools", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("SchoolId");
