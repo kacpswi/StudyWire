@@ -1,1 +1,8 @@
-<p>news-list works!</p>
+<div class="row align-items-center" style="height: 250px;">
+    
+        @for (news of newses; track news.id) {
+            <div class="col-3">
+                <app-news-card [news]="news"></app-news-card>
+            </div>
+        }
+</div>

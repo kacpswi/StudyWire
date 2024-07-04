@@ -10,7 +10,7 @@ namespace StudyWire.Application.Services.Interfaces
 {
     public interface INewsService
     {
-        public Task<ReturnNewsDto> GetNewsByIdAsync(int id);
+        public Task<ReturnNewsDto> GetNewsByIdAsync(int schoolId, int newsId);
         public Task<IEnumerable<ReturnNewsDto>> GetNewsBySchoolIdAsync(int userId);
         public Task<IEnumerable<ReturnNewsDto>> GetAllNewsAsync();
         public Task<int> CreateNewsAsync(PostNewsDto newsDto, int userId, int schoolId);

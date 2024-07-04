@@ -21,7 +21,7 @@ export class RegisterComponent {
     this.accountService.register(this.model).subscribe({
       next: _ =>{
         this.cancel();
-        this.router.navigateByUrl("/news");
+        this.router.navigateByUrl("/newses");
       },
       error: error => {
         console.log(error);

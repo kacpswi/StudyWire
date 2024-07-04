@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RegisterComponent } from "../register/register.component";
 import { LoginComponent } from "../login/login.component";
-import { HttpClient } from '@angular/common/http';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -11,16 +10,10 @@ import { AccountService } from '../_services/account.service';
     styleUrl: './home.component.css',
     imports: [RegisterComponent, LoginComponent]
 })
-export class HomeComponent implements OnInit{
-  http = inject(HttpClient);
+export class HomeComponent{
   accountService = inject(AccountService);
   registerMode = false;
   loginMode = false;
-  users: any;
-
-  ngOnInit(): void {
-    this.getUsers();
-  }
 
   registerToggle(){
     this.registerMode = !this.registerMode;
@@ -51,11 +44,4 @@ export class HomeComponent implements OnInit{
     this.loginMode = event;
   }
 
-  getUsers(){
-    this.http.get('https://localhost:7016/api/admin/users').subscribe({
-      next: response => this.users = response,
-      error: error => console.log(error),
-      complete: () => console.log("Compleated")
-    })
-  }
 }

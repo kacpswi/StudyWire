@@ -62,10 +62,13 @@ namespace StudyWire.Application.Services
             return dtos;
         }
 
-        public async Task<ReturnNewsDto> GetNewsByIdAsync(int id)
+        public async Task<ReturnNewsDto> GetNewsByIdAsync(int schoolId, int newsId)
         {
-            var news = await _newsRepository.GetNewsByIdAsync(id);
+
+            var news = await _newsRepository.GetNewsByIdAsync(newsId);
             if (news == null) throw new NotFoundException("News not found");
+
+            if (news.SchoolId != schoolId) throw new NotFoundException("School not found");
 
             return _mapper.Map<ReturnNewsDto>(news);
         }

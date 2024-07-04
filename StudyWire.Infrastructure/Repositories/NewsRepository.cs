@@ -30,18 +30,25 @@ namespace StudyWire.Infrastructure.Repositories
 
         public async Task<IEnumerable<News?>> GetAllNewsesAsync()
         {
-            return await _context.Newses.ToListAsync();
+            return await _context.Newses
+                .Include(n => n.School)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<News?>> GetAllNewsesBySchoolIdAsync(int schoolId)
         {
-            var newses = await _context.Newses.Where(n => n.SchoolId == schoolId).ToListAsync();
+            var newses = await _context.Newses
+                .Include(n => n.School)
+                .Where(n => n.SchoolId == schoolId)
+                .ToListAsync();
             return newses;
         }
 
         public async Task<News?> GetNewsByIdAsync(int newsId)
         {
-            return await _context.Newses.Where(n => n.Id == newsId).FirstOrDefaultAsync();
+            return await _context.Newses
+                .Include(n => n.School)
+                .FirstOrDefaultAsync(n => n.Id == newsId);
         }
 
         public async Task<bool> Save()

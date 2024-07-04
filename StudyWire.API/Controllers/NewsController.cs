@@ -65,5 +65,12 @@ namespace StudyWire.API.Controllers
             return NoContent();
         }
 
+        [HttpGet]
+        [Route("schools/{schoolId}/newses/{newsId}")]
+        public async Task<ActionResult<ReturnNewsDto>> GetNewsById([FromRoute] int schoolId, [FromRoute] int newsId)
+        {
+            var result = await _newsService.GetNewsByIdAsync(schoolId, newsId);
+            return Ok(result);
+        }
     }
 }
