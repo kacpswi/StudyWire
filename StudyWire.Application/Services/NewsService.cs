@@ -50,14 +50,14 @@ namespace StudyWire.Application.Services
             if (user.SchoolId != news.SchoolId || schoolId != user.SchoolId)
                 throw new BadRequestException("Cannot delete other schools' newses");
 
-            await _newsRepository.DeleteNewsAsync(news);
+            _newsRepository.DeleteNews(news);
             if(!await  _newsRepository.Save()) throw new BadRequestException("Unable to delete news");
 
         }
 
         public async Task<IEnumerable<ReturnNewsDto>> GetAllNewsAsync()
         {
-            var newses = await _newsRepository.GetAllNewsAsync();
+            var newses = await _newsRepository.GetAllNewsesAsync();
             var dtos = _mapper.Map<IEnumerable<ReturnNewsDto>>(newses);
             return dtos;
         }
@@ -72,7 +72,7 @@ namespace StudyWire.Application.Services
 
         public async Task<IEnumerable<ReturnNewsDto>> GetNewsBySchoolIdAsync(int schoolId)
         {
-            var newses = await _newsRepository.GetAllNewsBySchoolIdAsync(schoolId);
+            var newses = await _newsRepository.GetAllNewsesBySchoolIdAsync(schoolId);
             var result = _mapper.Map<IEnumerable<ReturnNewsDto>>(newses);
             return result;
         }

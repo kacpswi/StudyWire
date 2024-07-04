@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StudyWire.Application.DTOsModel.User;
 using StudyWire.Application.Exceptions;
@@ -16,11 +17,13 @@ namespace StudyWire.Application.Services
     {
         private UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public UserService(UserManager<AppUser> userManager, ITokenService tokenService)
+        public UserService(UserManager<AppUser> userManager, ITokenService tokenService, IMapper mapper)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         public async Task<ReturnLoginUserDto> LoginUserAsync(LoginUserDto loginUserDto)
@@ -36,7 +39,7 @@ namespace StudyWire.Application.Services
 
             if (!result)
             {
-                throw new BadRequestException("Invalid username or password.");
+                throw new BadRequestException("Invalid Email or Password.");
             }
 
             string token = await _tokenService.CreateToken(user);
@@ -53,31 +56,17 @@ namespace StudyWire.Application.Services
 
         public async Task<ReturnLoginUserDto> RegisterUserAsync(RegisterUserDto registerUserDto)
         {
-            if (await UserExists(registerUserDto.Email))
-            {
-                throw new BadRequestException("Email is taken.");
-            }
-            else if (registerUserDto.Password != registerUserDto.ConfirmPassword)
+            
+            if (registerUserDto.Password != registerUserDto.ConfirmPassword)
             {
                 throw new BadRequestException("Password and Confirm Password must be the same.");
             }
-
-
-            var user = new AppUser
+            else if (await UserExists(registerUserDto.Email))
             {
-                Email = registerUserDto.Email,
-                Name = registerUserDto.Name,
-                Surename = registerUserDto.Surename,
-                Address = new Address
-                {
-                    PhoneNumber = registerUserDto.PhoneNumber,
-                    City = registerUserDto.City,
-                    PostalCode = registerUserDto.PostalCode,
-                    Street  = registerUserDto.Street,
-                }
-            };
+                throw new BadRequestException("Email is taken.");
+            }
 
-            //var user = _mapper.Map<User>(registerUserDto);
+            var user = _mapper.Map<AppUser>(registerUserDto);
             user.UserName = registerUserDto.Email;
 
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);
