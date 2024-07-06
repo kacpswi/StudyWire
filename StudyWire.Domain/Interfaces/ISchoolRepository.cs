@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudyWire.Application.Services.Interfaces
+namespace StudyWire.Domain.Interfaces
 {
-    public interface ITokenService
+    public interface ISchoolRepository
     {
-        public Task<string> CreateToken(AppUser user);
+        public Task<School?> GetSchoolByIdAsync(int schoolId);
     }
 }

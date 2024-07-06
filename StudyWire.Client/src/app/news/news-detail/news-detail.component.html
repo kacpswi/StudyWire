@@ -1,1 +1,62 @@
-<p>news-detail works!</p>
+<div class="row">
+    <div class="col-2 mt-2">
+        <button type="button" class="btn btn-dark"><- go back</button>
+    </div>
+    <div class="mt-2 col-9 col-xl-6">
+        <header class="border-bottom lh-1 py-2">
+            <h1>{{news?.title}}</h1>
+            <div class="row mt-4">
+                <div class="col-10">
+                    <i>
+                        Imię Nazwisko
+                    </i>
+                </div>
+                <div class="col-2">
+                    <i>
+                        data
+                    </i>
+                </div>
+            </div>
+        </header>
+    
+        <div class="mt-3 mb-5" style="text-align: justify;">
+            <div class="mb-3 mt-3">
+                <i><h5 style="font-size: 25px;">{{news?.description}}</h5></i>
+            </div>
+            <div >
+                {{news?.content}}
+            </div>
+        </div>
+    
+    </div>
+    <div class="col-1"></div>
+    <div class="mt-5 col-xl-3 d-none d-xl-block">
+        <div>
+            {{news?.schoolName}}
+        </div>
+        <div class="mb-3" style="margin-top: 80px;">
+            <p>
+                See also...
+            </p>
+        </div>
+        <div class="card">
+            <div class="card-body" style="height: 248px;">
+              <h5 class="card-title">tytul</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">nazwa</h6>
+              <p class="card-text">opis</p>
+              <div style="position: absolute; bottom: 0;">
+                <ul class="list-inline text-center">
+                  <li class="list-inline-item">
+                    <button class="btn btn-primary me-5">Read News</button>
+                  </li>
+                  <li class="list-inline-item ms-3 p-1">
+                    <div>data</div>
+                  </li>
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

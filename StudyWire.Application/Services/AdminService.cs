@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using StudyWire.Application.Exceptions;
 using StudyWire.Application.Services.Interfaces;
-using StudyWire.Domain.Entities.User;
+using StudyWire.Domain.Entities;
 using StudyWire.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,28 +14,27 @@ namespace StudyWire.Application.Services
 {
     public class AdminService : IAdminService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<AppUser> _userManager;
 
-        public AdminService(IUserRepository userRepository)
+        public AdminService(UserManager<AppUser> userManager)
         {
-            _userRepository = userRepository;
+            _userManager = userManager;
         }
 
         public async Task DeleteUserByIdAsync(int id)
         {
-            var user = await _userRepository.GetUserByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id.ToString());
 
             if(user == null)
             {
                 throw new NotFoundException("User not found.");
             }
-
-            await _userRepository.DeleteUser(user);
+            await _userManager.DeleteAsync(user);
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            return await _userRepository.GetUsersAsync();
+            return await _userManager.Users.ToListAsync();
         }
     }
 }

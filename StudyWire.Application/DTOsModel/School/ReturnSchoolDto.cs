@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using StudyWire.Application.DTOsModel.News;
+using StudyWire.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace StudyWire.Domain.Entities.User
+namespace StudyWire.Application.DTOsModel.School
 {
-    public class AppUser : IdentityUser<int>
+    public class ReturnSchoolDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string Surename { get; set; }
         public Address Address { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using StudyWire.Domain.Entities;
+﻿using StudyWire.Application.DTOsModel.School;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace StudyWire.Application.Services.Interfaces
 {
-    public interface ITokenService
+    public interface ISchoolService
     {
-        public Task<string> CreateToken(AppUser user);
+        public Task<ReturnSchoolDto> GetSchoolByIdAsync(int id);
     }
 }

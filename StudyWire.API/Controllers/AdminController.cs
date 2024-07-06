@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyWire.Application.Services.Interfaces;
-using StudyWire.Domain.Entities.User;
+using StudyWire.Domain.Entities;
 
 namespace StudyWire.API.Controllers
 {
@@ -17,6 +17,7 @@ namespace StudyWire.API.Controllers
             _adminService = adminService;
         }
 
+        //AllowAnonymous only for testing
         [AllowAnonymous]
         [HttpGet]
         [Route("users")]
