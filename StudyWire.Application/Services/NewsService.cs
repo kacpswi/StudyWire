@@ -28,15 +28,18 @@ namespace StudyWire.Application.Services
         public async Task<int> CreateNewsAsync(PostNewsDto newsDto, int userId, int schoolId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user.SchoolId != schoolId) throw new BadRequestException("Cannot post other schools' newses");
+            if (user == null) throw new NotFoundException("User not found");
+
+            if (user.SchoolId != schoolId) throw new BadRequestException("Cannot post other schools' news");
 
             var news = _mapper.Map<News>(newsDto);
             news.Author = user.Name + " " + user.Surename;
             news.SchoolId = (int)user.SchoolId;
+            news.CreatedById = userId;
 
-            await _newsRepository.AddNews(news);
+            await _newsRepository.AddNewsAsync(news);
 
-            if (!await _newsRepository.Save()) throw new BadRequestException("Failed to post news");
+            if (!await _newsRepository.SaveAsync()) throw new BadRequestException("Failed to post news");
 
             return news.Id;
         }
@@ -46,19 +49,18 @@ namespace StudyWire.Application.Services
             var news = await _newsRepository.GetNewsByIdAsync(newsId);
             if (news == null) throw new NotFoundException("News not found");
 
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user.SchoolId != news.SchoolId || schoolId != user.SchoolId)
-                throw new BadRequestException("Cannot delete other schools' newses");
+            if (userId != news.CreatedById)
+                throw new BadRequestException("Cannot delete others news");
 
             _newsRepository.DeleteNews(news);
-            if(!await  _newsRepository.Save()) throw new BadRequestException("Unable to delete news");
+            if(!await  _newsRepository.SaveAsync()) throw new BadRequestException("Unable to delete news");
 
         }
 
         public async Task<IEnumerable<ReturnNewsDto>> GetAllNewsAsync()
         {
-            var newses = await _newsRepository.GetAllNewsesAsync();
-            var dtos = _mapper.Map<IEnumerable<ReturnNewsDto>>(newses);
+            var news = await _newsRepository.GetAllNewsAsync();
+            var dtos = _mapper.Map<IEnumerable<ReturnNewsDto>>(news);
             return dtos;
         }
 
@@ -75,8 +77,8 @@ namespace StudyWire.Application.Services
 
         public async Task<IEnumerable<ReturnNewsDto>> GetNewsBySchoolIdAsync(int schoolId)
         {
-            var newses = await _newsRepository.GetAllNewsesBySchoolIdAsync(schoolId);
-            var result = _mapper.Map<IEnumerable<ReturnNewsDto>>(newses);
+            var news = await _newsRepository.GetAllNewsBySchoolIdAsync(schoolId);
+            var result = _mapper.Map<IEnumerable<ReturnNewsDto>>(news);
             return result;
         }
 
@@ -85,13 +87,12 @@ namespace StudyWire.Application.Services
             var news = await _newsRepository.GetNewsByIdAsync(newsId);
             if (news != null)
             {
-                var user = await _userManager.FindByIdAsync(userId.ToString());
-                if (user.SchoolId != news.SchoolId || schoolId != user.SchoolId)
-                    throw new BadRequestException("Cannot edit other schools' newses");
+                if (userId != news.CreatedById)
+                    throw new BadRequestException("Cannot edit others news");
 
                 var newNews = _mapper.Map(newsDto, news);
 
-                if (!await _newsRepository.Save())
+                if (!await _newsRepository.SaveAsync())
                     throw new BadRequestException("Unable to update news");
 
                 var newNewsDto = _mapper.Map<ReturnNewsDto>(newNews);

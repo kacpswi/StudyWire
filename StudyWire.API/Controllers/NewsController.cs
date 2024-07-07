@@ -30,7 +30,7 @@ namespace StudyWire.API.Controllers
 
         [HttpGet]
         [Route("schools/{schoolId}/newses")]
-        public async Task<ActionResult<IEnumerable<ReturnNewsDto>>> GetNewses([FromRoute] int schoolId)
+        public async Task<ActionResult<IEnumerable<ReturnNewsDto>>> GetNews([FromRoute] int schoolId)
         {
             var result = await _newsService.GetNewsBySchoolIdAsync(schoolId);
             return Ok(result);
@@ -38,7 +38,7 @@ namespace StudyWire.API.Controllers
 
         [HttpGet]
         [Route("newses")]
-        public async Task<ActionResult<IEnumerable<ReturnNewsDto>>> GetNewses()
+        public async Task<ActionResult<IEnumerable<ReturnNewsDto>>> GetNews()
         {
             var result = await _newsService.GetAllNewsAsync();
             return Ok(result);
@@ -57,7 +57,7 @@ namespace StudyWire.API.Controllers
         [HttpDelete]
         [Route("schools/{schoolId}/newses/{newsId}")]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<ReturnNewsDto>> DeleteNews([FromRoute] int schoolId, [FromRoute] int newsId)
+        public async Task<ActionResult> DeleteNews([FromRoute] int schoolId, [FromRoute] int newsId)
         {
             int userId = User.GetUserId();
             await _newsService.DeleteNewsAsync(newsId, schoolId, userId);

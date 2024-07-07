@@ -16,7 +16,7 @@ namespace StudyWire.Infrastructure.Presistence
             IdentityUserToken<int>>
     {
         public DbSet<School> Schools { get; set; }
-        public DbSet<News> Newses { get; set; }
+        public DbSet<News> News { get; set; }
 
         public StudyWireDbContext(DbContextOptions<StudyWireDbContext> options) : base(options)
         {
