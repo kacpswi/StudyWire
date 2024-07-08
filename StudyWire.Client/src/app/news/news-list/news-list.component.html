@@ -1,8 +1,88 @@
 <div class="row">
     
-        @for (news of newses; track news.id) {
+        <div class="text-center my-5">
+            <h2>Check out news</h2>
+        </div>
+
+        <div class="container mt-3 justify-content-center">
+            <form #form="ngForm" class="d-flex mb-3"(ngSubmit)="loadNews()">
+                <div class="d-flex mx-2">
+                    <label class="col-form-label">Search:</label>
+                    <input type="text" 
+                        class="form-control ms-1" 
+                        style="width: 200px;"
+                        name="searchPhrase"
+                        [(ngModel)]="userParams.searchPhrase"
+                    >
+                </div>
+
+                <div class="d-flex mx-2">
+                    <label class="col-form-label">Sort by:</label>
+                    <select name="sortBy" style="width: 130px;" class="form-select ms-1"
+                        [(ngModel)]="userParams.sortBy"
+                    >
+                        @for(sort of sortByList; track sort.value){
+                            <option [value]="sort.value">
+                                {{sort.display}}
+                            </option>
+                        }
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary ms-1" type="submit">Apply filters</button>
+                <button (click)="resetFilters()" class="btn btn-info ms-1" type="submit">Reset filters</button>
+
+                <div class="col">
+                    <div class="btn-gorup float-end">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            name="direction"
+                            (click)="loadNews()"
+                            btnRadio="ASC"
+                            [(ngModel)]="userParams.sortDirection"
+                        >Ascending</button>
+                    </div>
+                    <div class="btn-gorup float-end">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            name="direction"
+                            (click)="loadNews()"
+                            btnRadio="DESC"
+                            [(ngModel)]="userParams.sortDirection"
+                        >Descending</button>
+                    </div>
+                    <div class="float-end mx-2">
+                        <label class="col-form-label">Sort direction:</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="text-center my-3">
+            <h2>Your searching result - {{newsService.paginatedResults()?.pagination?.totalItems}} news found!</h2>
+        </div>
+        @for (news of newsService.paginatedResults()?.items; track news.id) {
             <div class="col-sm-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
                 <app-news-card [news]="news"></app-news-card>
             </div>
         }
 </div>
+
+@if(newsService.paginatedResults()?.pagination){
+    <div class="d-flex justify-content-center">
+        <pagination 
+            [boundaryLinks]="true"
+            [totalItems]="newsService.paginatedResults()?.pagination!.totalItems"
+            [itemsPerPage]="newsService.paginatedResults()?.pagination!.itemsPerPage"
+            (pageChanged)="pageChange($event)"
+            [maxSize]="10"
+            previousText="&lsaquo;"
+            nextText="&rsaquo;" 
+            firstText="&laquo;" 
+            lastText="&raquo;">
+        </pagination>
+    </div>
+}
+
+

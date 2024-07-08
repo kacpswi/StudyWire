@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudyWire.Domain.Entities;
 using StudyWire.Domain.Interfaces;
+using StudyWire.Domain.Models;
 using StudyWire.Infrastructure.Presistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,20 +30,40 @@ namespace StudyWire.Infrastructure.Repositories
             _context.News.Remove(news);
         }
 
-        public async Task<IEnumerable<News?>> GetAllNewsAsync()
+        public async Task<(IEnumerable<News?>,int)> GetAllNewsAsync(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection)
         {
-            return await _context.News
+            var query = GetPaginatedQuery(searchPhrase, pageSize, pageNumber, sortBy, sortDirection);
+            
+            var news = await query
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize)
                 .Include(n => n.School)
                 .ToListAsync();
+
+            var count = await query.CountAsync();
+
+            return (news, count);
+
         }
 
-        public async Task<IEnumerable<News?>> GetAllNewsBySchoolIdAsync(int schoolId)
+        public async Task<(IEnumerable<News?>, int)> GetAllNewsBySchoolIdAsync(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection, int schoolId)
         {
-            var news = await _context.News
+            var query = GetPaginatedQuery(searchPhrase, pageSize, pageNumber, sortBy, sortDirection)
+                .Where(n => n.SchoolId == schoolId);
+
+            var news = await query
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize)
                 .Include(n => n.School)
-                .Where(n => n.SchoolId == schoolId)
                 .ToListAsync();
-            return news;
+
+            var count = await query.CountAsync();
+
+            //var news = await _context.News
+            //    .Include(n => n.School)
+            //    .Where(n => n.SchoolId == schoolId)
+            //    .ToListAsync();
+            return (news, count);
         }
 
         public async Task<News?> GetNewsByIdAsync(int newsId)
@@ -54,6 +76,31 @@ namespace StudyWire.Infrastructure.Repositories
         public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        private IQueryable<News> GetPaginatedQuery(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection)
+        {
+            var baseQuery = _context.News
+                .Where(n => searchPhrase == null || (n.Title.ToUpper().Contains(searchPhrase.ToUpper())
+                                            || n.Description.ToUpper().Contains(searchPhrase.ToUpper())));
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelectors = new Dictionary<string, Expression<Func<News, object>>>
+                {
+                    { nameof(News.CreatedAt), r => r.CreatedAt },
+                    { nameof(News.SchoolId), r => r.SchoolId },
+                    { nameof(News.Author), r => r.Author }
+                };
+
+                var selectedColumn = columnsSelectors[sortBy];
+
+                baseQuery = sortDirection == SortDirection.ASC ?
+                    baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            return baseQuery;
         }
     }
 }

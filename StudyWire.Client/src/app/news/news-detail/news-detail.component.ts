@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { NewsesService } from '../../_services/newses.service';
+import { NewsService } from '../../_services/news.service';
 import { ActivatedRoute } from '@angular/router';
 import { News } from '../../_models/news';
 
@@ -11,7 +11,7 @@ import { News } from '../../_models/news';
   styleUrl: './news-detail.component.css'
 })
 export class NewsDetailComponent implements OnInit{
-  private newsesService = inject(NewsesService);
+  private newsesService = inject(NewsService);
   private route = inject(ActivatedRoute);
   news?: News;
 

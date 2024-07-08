@@ -11,7 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace StudyWire.Infrastructure
+namespace StudyWire.Infrastructure.Seeders
 {
     public class Seeder
     {
@@ -79,16 +79,27 @@ namespace StudyWire.Infrastructure
                 var guestResult = await userManager.CreateAsync(guest, "Pa$$w0rd");
                 await userManager.AddToRolesAsync(guest, new[] { "Guest" });
 
-                var teacher = new AppUser
+                var teacherA = new AppUser
                 {
-                    UserName = "teacher",
-                    Name = "teacher",
-                    Surename = "teacher",
-                    Email = "teacher",
+                    UserName = "teacherA",
+                    Name = "teacherA",
+                    Surename = "teacherA",
+                    Email = "teacherA",
                     SchoolId = 1,
                 };
-                var teacherResult = await userManager.CreateAsync(teacher, "Pa$$w0rd");
-                await userManager.AddToRolesAsync(teacher, new[] { "Teacher" });
+                var teacherAResult = await userManager.CreateAsync(teacherA, "Pa$$w0rd");
+                await userManager.AddToRolesAsync(teacherA, new[] { "Teacher" });
+
+                var teacherB = new AppUser
+                {
+                    UserName = "teacherB",
+                    Name = "teacherB",
+                    Surename = "teacherB",
+                    Email = "teacherB",
+                    SchoolId = 2,
+                };
+                var teacherBResult = await userManager.CreateAsync(teacherB, "Pa$$w0rd");
+                await userManager.AddToRolesAsync(teacherB, new[] { "Teacher" });
 
                 var studentA = new AppUser
                 {

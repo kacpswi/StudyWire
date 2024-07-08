@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StudyWire.Application.DTOsModel.News;
 using StudyWire.Application.Extensions;
+using StudyWire.Application.Helpers.Pagination;
 using StudyWire.Application.Services.Interfaces;
 
 namespace StudyWire.API.Controllers
@@ -19,33 +20,35 @@ namespace StudyWire.API.Controllers
         }
 
         [HttpPost]
-        [Route("schools/{schoolId}/newses")]
+        [Route("schools/{schoolId}/news")]
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<int>> PostNews([FromBody]PostNewsDto dto, int schoolId)
         {
             int userId = User.GetUserId();
             var newsId = await _newsService.CreateNewsAsync(dto, userId, schoolId);
-            return Created($"api/schools/{schoolId}/newses/{newsId}", null);
+            return Created($"api/schools/{schoolId}/news/{newsId}", null);
         }
 
         [HttpGet]
-        [Route("schools/{schoolId}/newses")]
-        public async Task<ActionResult<IEnumerable<ReturnNewsDto>>> GetNews([FromRoute] int schoolId)
+        [Route("schools/{schoolId}/news")]
+        public async Task<ActionResult<IEnumerable<ReturnNewsDto>>> GetNews([FromQuery]PagedQuery query, [FromRoute] int schoolId)
         {
-            var result = await _newsService.GetNewsBySchoolIdAsync(schoolId);
-            return Ok(result);
+            var result = await _newsService.GetNewsBySchoolIdAsync(query, schoolId);
+            Response.AddPaginationHeader(result);
+            return Ok(result.Items);
         }
 
         [HttpGet]
-        [Route("newses")]
-        public async Task<ActionResult<IEnumerable<ReturnNewsDto>>> GetNews()
+        [Route("news")]
+        public async Task<ActionResult<IEnumerable<ReturnNewsDto>>> GetNews([FromQuery] PagedQuery query)
         {
-            var result = await _newsService.GetAllNewsAsync();
-            return Ok(result);
+            var result = await _newsService.GetAllNewsAsync(query);
+            Response.AddPaginationHeader(result);
+            return Ok(result.Items);
         }
 
         [HttpPut]
-        [Route("schools/{schoolId}/newses/{newsId}")]
+        [Route("schools/{schoolId}/news/{newsId}")]
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<ReturnNewsDto>> UpdateNews([FromRoute]int schoolId, [FromRoute] int newsId, [FromBody]PostNewsDto dto)
         {
@@ -55,7 +58,7 @@ namespace StudyWire.API.Controllers
         }
 
         [HttpDelete]
-        [Route("schools/{schoolId}/newses/{newsId}")]
+        [Route("schools/{schoolId}/news/{newsId}")]
         [Authorize(Roles = "Teacher")]
         public async Task<ActionResult> DeleteNews([FromRoute] int schoolId, [FromRoute] int newsId)
         {
@@ -66,7 +69,7 @@ namespace StudyWire.API.Controllers
         }
 
         [HttpGet]
-        [Route("schools/{schoolId}/newses/{newsId}")]
+        [Route("schools/{schoolId}/news/{newsId}")]
         public async Task<ActionResult<ReturnNewsDto>> GetNewsById([FromRoute] int schoolId, [FromRoute] int newsId)
         {
             var result = await _newsService.GetNewsByIdAsync(schoolId, newsId);

@@ -1,26 +1,40 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { NewsesService } from '../../_services/newses.service';
-import { News } from '../../_models/news';
+import { NewsService } from '../../_services/news.service';
 import { NewsCardComponent } from "../news-card/news-card.component";
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { UserParams } from '../../_models/userParams';
+import { FormsModule } from '@angular/forms';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 @Component({
     selector: 'app-news-list',
     standalone: true,
     templateUrl: './news-list.component.html',
     styleUrl: './news-list.component.css',
-    imports: [NewsCardComponent]
+    imports: [NewsCardComponent, PaginationModule, FormsModule, ButtonsModule]
 })
 export class NewsListComponent implements OnInit {
-  private newsesService = inject(NewsesService);
-  newses: News[] = [];
+  newsService = inject(NewsService);
+  userParams = new UserParams(null,null,null);
+  sortByList = [{value:'CreatedAt', display: 'Date'},{value:'SchoolId', display:'School'},{value:'Author',display:'Author'}]
 
   ngOnInit(): void {
-    this.loadNewses();
+    if (!this.newsService.paginatedResults()) this.loadNews();
   }
 
-  loadNewses(){
-    this.newsesService.getNewses().subscribe({
-      next: newses => this.newses = newses
-    })
+  loadNews(){
+    this.newsService.getAllNews(this.userParams);
+  }
+
+  resetFilters(){
+    this.userParams = new UserParams(null, null, null);
+    this.loadNews;
+  }
+
+  pageChange(event:any){
+    if(this.userParams.pageNumber !== event.page){
+      this.userParams.pageNumber = event.page;
+      this.loadNews()
+    }
   }
 }

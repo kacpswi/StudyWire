@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using StudyWire.Application.DTOsModel.News;
 using StudyWire.Application.Exceptions;
+using StudyWire.Application.Helpers.Pagination;
 using StudyWire.Application.Services.Interfaces;
 using StudyWire.Domain.Entities;
 using StudyWire.Domain.Interfaces;
@@ -57,11 +58,13 @@ namespace StudyWire.Application.Services
 
         }
 
-        public async Task<IEnumerable<ReturnNewsDto>> GetAllNewsAsync()
+        public async Task<PagedResult<ReturnNewsDto>> GetAllNewsAsync(PagedQuery query)
         {
-            var news = await _newsRepository.GetAllNewsAsync();
-            var dtos = _mapper.Map<IEnumerable<ReturnNewsDto>>(news);
-            return dtos;
+            var paginationResult = await _newsRepository.GetAllNewsAsync(query.SearchPhrase, query.PageSize, query.PageNumber, query.SortBy, query.SortDirection);
+            var dtos = _mapper.Map<IEnumerable<ReturnNewsDto>>(paginationResult.Item1);
+
+            var result = new PagedResult<ReturnNewsDto>(dtos, paginationResult.Item2, query.PageSize, query.PageNumber);
+            return result;
         }
 
         public async Task<ReturnNewsDto> GetNewsByIdAsync(int schoolId, int newsId)
@@ -75,10 +78,12 @@ namespace StudyWire.Application.Services
             return _mapper.Map<ReturnNewsDto>(news);
         }
 
-        public async Task<IEnumerable<ReturnNewsDto>> GetNewsBySchoolIdAsync(int schoolId)
+        public async Task<PagedResult<ReturnNewsDto>> GetNewsBySchoolIdAsync(PagedQuery query, int schoolId)
         {
-            var news = await _newsRepository.GetAllNewsBySchoolIdAsync(schoolId);
-            var result = _mapper.Map<IEnumerable<ReturnNewsDto>>(news);
+            var paginationResult = await _newsRepository.GetAllNewsBySchoolIdAsync(query.SearchPhrase, query.PageSize, query.PageNumber, query.SortBy, query.SortDirection, schoolId);
+            var dtos = _mapper.Map<IEnumerable<ReturnNewsDto>>(paginationResult.Item1);
+
+            var result = new PagedResult<ReturnNewsDto>(dtos, paginationResult.Item2, query.PageSize, query.PageNumber);
             return result;
         }
 
