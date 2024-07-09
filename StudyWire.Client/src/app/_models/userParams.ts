@@ -15,7 +15,7 @@ export class UserParams{
 
 
         if (sortBy == null){
-            this.sortBy = ""
+            this.sortBy = "CreatedAt"
         }
         else{
             this.sortBy = sortBy;
@@ -28,6 +28,5 @@ export class UserParams{
         else{
             this.sortDirection = sortDirection;
         }
-        
     }
 }

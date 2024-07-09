@@ -22,7 +22,7 @@ export class LoginComponent {
     this.accountService.login(this.model).subscribe({
       next: _ => {
         this.cancel()
-        this.router.navigateByUrl("/newses")
+        this.router.navigateByUrl("/news")
       },
       error: error => console.log(error)
     })

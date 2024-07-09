@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StudyWire.Application.DTOsModel.User;
-using StudyWire.Application.Exceptions;
 using StudyWire.Application.Services.Interfaces;
 using StudyWire.Domain.Entities;
+using StudyWire.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +49,7 @@ namespace StudyWire.Application.Services
                 Name = user.Name,
                 Surename = user.Surename,
                 Token = token,
+                SchoolId = user.SchoolId
             };
 
             return userDto;
@@ -90,7 +91,8 @@ namespace StudyWire.Application.Services
             {
                 Name = user.UserName,
                 Surename = user.Surename,
-                Token = token
+                Token = token,
+                SchoolId = user.SchoolId
             };
 
 

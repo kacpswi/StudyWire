@@ -11,8 +11,8 @@ export const routes: Routes = [
         runGuardsAndResolvers: 'always',
         canActivate:[authGuard],
         children:[
-            {path: 'newses', component:NewsListComponent},
-            {path: 'schools/:schoolId/newses/:newsId', component: NewsDetailComponent},
+            {path: 'news', component:NewsListComponent},
+            {path: 'schools/:schoolId/news/:newsId', component: NewsDetailComponent},
         ]
     },
     {path: '**', component: HomeComponent, pathMatch: 'full'},

@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { News } from '../_models/news';
 import { PaginatedResult } from '../_models/pagination';
 import { UserParams } from '../_models/userParams';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,20 @@ export class NewsService {
     return this.http.get<News>(this.baseUrl + 'schools/' + schoolId + '/news/' + newsId);
   }
 
-  getNewsesForSchool(schoolId: string){
-    return this.http.get<News[]>(this.baseUrl + 'schools/' + schoolId);
+  getNewsForSchool(userParams: UserParams, schoolId: string){
+    let params = this.setPaginationHeaders(userParams.pageNumber, userParams.pageSize)
+
+    params = params.append('searchPhrase', userParams.searchPhrase);
+    params = params.append('sortBy', userParams.sortBy);
+    params = params.append('sortDirection', userParams.sortDirection);
+
+    return this.http.get<News[]>(this.baseUrl + 'schools/' + schoolId + '/news', {observe: 'response', params}).subscribe({
+      next: response => {
+        this.paginatedResults.set({
+          items:response.body as News[],
+          pagination: JSON.parse(response.headers.get('Pagination')!)
+        })
+      }
+    });
   }
 }

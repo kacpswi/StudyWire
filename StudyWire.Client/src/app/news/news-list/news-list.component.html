@@ -1,24 +1,27 @@
-<div class="row">
-    
-        <div class="text-center my-5">
-            <h2>Check out news</h2>
-        </div>
+<div class="text-center my-5">
+    <h2>Check out news</h2>
+</div>
 
-        <div class="container mt-3 justify-content-center">
-            <form #form="ngForm" class="d-flex mb-3"(ngSubmit)="loadNews()">
-                <div class="d-flex mx-2">
-                    <label class="col-form-label">Search:</label>
+
+
+<div class="container">
+    <form #form="ngForm" class="mb-3" (ngSubmit)="loadNews()">
+        <div class="row g-0">
+            <div class="col mb-3">
+                <div class="d-flex align-items-center">
+                    <label class="col-form-label me-2">Search:</label>
                     <input type="text" 
-                        class="form-control ms-1" 
-                        style="width: 200px;"
+                        class="form-control me-3" 
+                        style="width: 180px;"
                         name="searchPhrase"
                         [(ngModel)]="userParams.searchPhrase"
                     >
                 </div>
-
-                <div class="d-flex mx-2">
-                    <label class="col-form-label">Sort by:</label>
-                    <select name="sortBy" style="width: 130px;" class="form-select ms-1"
+            </div>
+            <div class="col mb-3" style="max-width: 180px;">
+                <div class="d-flex align-items-center">
+                    <label class="col-form-label me-1">Sort by:</label>
+                    <select name="sortBy" style="width: 100px;" class="form-select me-3"
                         [(ngModel)]="userParams.sortBy"
                     >
                         @for(sort of sortByList; track sort.value){
@@ -28,22 +31,43 @@
                         }
                     </select>
                 </div>
-                
-                <button class="btn btn-primary ms-1" type="submit">Apply filters</button>
-                <button (click)="resetFilters()" class="btn btn-info ms-1" type="submit">Reset filters</button>
-
-                <div class="col">
-                    <div class="btn-gorup float-end">
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            name="direction"
-                            (click)="loadNews()"
-                            btnRadio="ASC"
-                            [(ngModel)]="userParams.sortDirection"
-                        >Ascending</button>
+            </div>
+            @if(accountService.currentUser()?.schoolId != null){
+                <div class="col mb-3 me-5" style="min-width: 297px;">
+                    <div class="d-flex align-items-center">
+                        <label class="col-form-label me-1">News From:</label>
+                        <div class="d-flex">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                name="newsFrom"
+                                (click)="loadNews()"
+                                btnRadio="true"
+                                [(ngModel)]="this.newsFromUserSchool"
+                            >Your school</button>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                name="newsFrom"
+                                (click)="loadNews()"
+                                btnRadio="false"
+                                [(ngModel)]="this.newsFromUserSchool"
+                            >All schools</button>
+                        </div>
                     </div>
-                    <div class="btn-gorup float-end">
+                </div>
+            }
+            <div class="col mb-3">
+                <div class="d-flex">
+                    <button class="btn btn-primary me-1" type="submit">Apply filters</button>
+                    <button (click)="resetFilters()" class="btn btn-info" type="submit">Reset filters</button>
+                </div>
+
+            </div>
+            <div class="col mb-3">
+                <div class="d-flex align-items-center">
+                    <label class="col-form-label me-1">Sort:</label>
+                    <div class="d-flex">
                         <button
                             type="button"
                             class="btn btn-primary"
@@ -51,23 +75,53 @@
                             (click)="loadNews()"
                             btnRadio="DESC"
                             [(ngModel)]="userParams.sortDirection"
-                        >Descending</button>
-                    </div>
-                    <div class="float-end mx-2">
-                        <label class="col-form-label">Sort direction:</label>
+                            >Descending
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            name="direction"
+                            (click)="loadNews()"
+                            btnRadio="ASC"
+                            [(ngModel)]="userParams.sortDirection"
+                            >Ascending
+                        </button>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="text-center my-3">
-            <h2>Your searching result - {{newsService.paginatedResults()?.pagination?.totalItems}} news found!</h2>
-        </div>
-        @for (news of newsService.paginatedResults()?.items; track news.id) {
-            <div class="col-sm-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
-                <app-news-card [news]="news"></app-news-card>
             </div>
-        }
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="text-center my-3">
+                    <h2>Your searching result - {{newsService.paginatedResults()?.pagination?.totalItems}} news found!</h2>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-flex my-3">
+                    <label class="col-form-label me-1">News per page:</label>
+                    <select name="itemsPerPage" class="form-select" style="min-width: 70px; max-width: 70px;"
+                        [(ngModel)]="userParams.pageSize"
+                    >
+                        @for(items of itemsPerPageList; track items){
+                            <option [value]="items">
+                                {{items}}
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
+      
+<div class="row">
+    @for (news of newsService.paginatedResults()?.items; track news.id) {
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
+            <app-news-card [news]="news"></app-news-card>
+        </div>
+    }
+</div>
+
 
 @if(newsService.paginatedResults()?.pagination){
     <div class="d-flex justify-content-center">

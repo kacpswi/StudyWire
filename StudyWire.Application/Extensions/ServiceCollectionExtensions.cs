@@ -3,12 +3,11 @@ using System.Reflection;
 
 namespace StudyWire.Application.Extensions
 {
-    public static class DependencyInjection
+    public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static void AddApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            return services;
         }
     }
 }

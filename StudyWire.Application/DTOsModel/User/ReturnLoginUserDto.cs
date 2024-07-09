@@ -11,5 +11,6 @@ namespace StudyWire.Application.DTOsModel.User
         public string Name { get; set; }
         public string Surename { get; set; }
         public string Token { get; set; }
+        public int? SchoolId { get; set; }
     }
 }

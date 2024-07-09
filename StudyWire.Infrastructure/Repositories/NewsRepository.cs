@@ -32,7 +32,7 @@ namespace StudyWire.Infrastructure.Repositories
 
         public async Task<(IEnumerable<News?>,int)> GetAllNewsAsync(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection)
         {
-            var query = GetPaginatedQuery(searchPhrase, pageSize, pageNumber, sortBy, sortDirection);
+            var query = GetAllSearchedAndSortedQuery(searchPhrase, sortBy, sortDirection);
             
             var news = await query
                 .Skip(pageSize * (pageNumber - 1))
@@ -48,7 +48,7 @@ namespace StudyWire.Infrastructure.Repositories
 
         public async Task<(IEnumerable<News?>, int)> GetAllNewsBySchoolIdAsync(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection, int schoolId)
         {
-            var query = GetPaginatedQuery(searchPhrase, pageSize, pageNumber, sortBy, sortDirection)
+            var query = GetAllSearchedAndSortedQuery(searchPhrase, sortBy, sortDirection)
                 .Where(n => n.SchoolId == schoolId);
 
             var news = await query
@@ -78,7 +78,7 @@ namespace StudyWire.Infrastructure.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        private IQueryable<News> GetPaginatedQuery(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection)
+        private IQueryable<News> GetAllSearchedAndSortedQuery(string? searchPhrase, string? sortBy, SortDirection sortDirection)
         {
             var baseQuery = _context.News
                 .Where(n => searchPhrase == null || (n.Title.ToUpper().Contains(searchPhrase.ToUpper())

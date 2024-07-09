@@ -1,12 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { NewsService } from '../../_services/news.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { News } from '../../_models/news';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-news-detail',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterLink],
   templateUrl: './news-detail.component.html',
   styleUrl: './news-detail.component.css'
 })
@@ -22,13 +23,10 @@ export class NewsDetailComponent implements OnInit{
   loadNews(){
     const schoolId = this.route.snapshot.paramMap.get('schoolId');
     const newsId = this.route.snapshot.paramMap.get('newsId');
-    if (!newsId || !schoolId) 
-      {
-        console.log("hi");
-        return;
-      }
+    if (!newsId || !schoolId) return;
+
     this.newsesService.getNews(schoolId, newsId).subscribe({
-      next: news => this.news = news
+        next: news => this.news = news
     });
   }
 }

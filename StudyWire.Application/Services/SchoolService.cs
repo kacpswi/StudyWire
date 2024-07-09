@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using StudyWire.Application.DTOsModel.News;
 using StudyWire.Application.DTOsModel.School;
-using StudyWire.Application.Exceptions;
 using StudyWire.Application.Services.Interfaces;
 using StudyWire.Domain.Entities;
+using StudyWire.Domain.Exceptions;
 using StudyWire.Domain.Interfaces;
 using System;
 using System.Collections.Generic;

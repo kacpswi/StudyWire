@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using StudyWire.Application.Exceptions;
+using StudyWire.Domain.Exceptions;
 
-namespace StudyWire.Application.Middlewares
+namespace StudyWire.API.Middlewares
 {
     public class ErrorHandlingMiddleware : IMiddleware
     {

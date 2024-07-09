@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-2 mt-2">
-        <button type="button" class="btn btn-dark"><- go back</button>
+        <button type="button" class="btn btn-dark" routerLink="/news" routerLinkActive="active"><- go back</button>
     </div>
     <div class="mt-2 col-9 col-xl-6">
         <header class="border-bottom lh-1 py-2">
@@ -8,12 +8,12 @@
             <div class="row mt-4">
                 <div class="col-10">
                     <i>
-                        Imię Nazwisko
+                        {{news?.author}}
                     </i>
                 </div>
                 <div class="col-2">
                     <i>
-                        data
+                        {{news?.createdAt | date:'yyyy-MM-dd'}}
                     </i>
                 </div>
             </div>
