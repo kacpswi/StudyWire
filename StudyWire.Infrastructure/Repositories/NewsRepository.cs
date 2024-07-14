@@ -59,11 +59,15 @@ namespace StudyWire.Infrastructure.Repositories
 
             var count = await query.CountAsync();
 
-            //var news = await _context.News
-            //    .Include(n => n.School)
-            //    .Where(n => n.SchoolId == schoolId)
-            //    .ToListAsync();
             return (news, count);
+        }
+
+        public async Task<IEnumerable<News?>> GetAllUserNewsAsync(int userId)
+        {
+            return await _context.News
+                .Where(n => n.CreatedById == userId)
+                .OrderByDescending(n=> n.CreatedAt)
+                .ToListAsync();
         }
 
         public async Task<News?> GetNewsByIdAsync(int newsId)

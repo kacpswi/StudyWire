@@ -26,7 +26,9 @@ namespace StudyWire.API.Controllers
         {
             int userId = User.GetUserId();
             var newsId = await _newsService.CreateNewsAsync(dto, userId, schoolId);
-            return Created($"api/schools/{schoolId}/news/{newsId}", null);
+            string location = $"schools/{schoolId}/news/{newsId}";
+            Response.ExposeLocationHeader();
+            return Created($"schools/{schoolId}/news/{newsId}", null);
         }
 
         [HttpGet]

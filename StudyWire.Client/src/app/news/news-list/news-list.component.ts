@@ -6,13 +6,15 @@ import { UserParams } from '../../_models/userParams';
 import { FormsModule } from '@angular/forms';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AccountService } from '../../_services/account.service';
+import { RouterLink } from '@angular/router';
+import { HasRoleDirective } from '../../_directives/has-role.directive';
 
 @Component({
     selector: 'app-news-list',
     standalone: true,
     templateUrl: './news-list.component.html',
     styleUrl: './news-list.component.css',
-    imports: [NewsCardComponent, PaginationModule, FormsModule, ButtonsModule]
+    imports: [NewsCardComponent, PaginationModule, FormsModule, ButtonsModule, RouterLink, HasRoleDirective]
 })
 export class NewsListComponent implements OnInit {
   newsService = inject(NewsService);
@@ -30,11 +32,9 @@ export class NewsListComponent implements OnInit {
     if (this.accountService.currentUser()?.schoolId == null)
     {
       this.newsService.getAllNews(this.userParams);
-      console.log(this.newsFromUserSchool)
     }
     else if(this.newsFromUserSchool == "true"){
       this.newsService.getNewsForSchool(this.userParams, this.accountService.currentUser()!.schoolId);
-      console.log(this.newsFromUserSchool)
     }
     else if(this.newsFromUserSchool == "false"){
       this.newsService.getAllNews(this.userParams);

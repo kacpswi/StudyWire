@@ -20,5 +20,10 @@ namespace StudyWire.Application.Extensions
             response.Headers.Append("Pagination", JsonSerializer.Serialize(paginationHeader, jsonOptions));
             response.Headers.Append("Access-Control-Expose-Headers", "Pagination");
         }
+
+        public static void ExposeLocationHeader(this HttpResponse response)
+        {
+            response.Headers.Append("Access-Control-Expose-Headers", "Location");
+        }
     }
 }

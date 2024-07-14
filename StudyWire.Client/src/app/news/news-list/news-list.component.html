@@ -1,6 +1,12 @@
-<div class="text-center my-5">
-    <h2>Check out news</h2>
+<div class="row align-items-center">
+    <div class="text-center my-5 col-10">
+        <h2>Check out news</h2>
+    </div>
+    <div *appHasRole="['Teacher']" class="col-2 d-flex justify-content-end align-items-right">
+        <button class="btn btn-primary" routerLink="/schools/{{accountService.currentUser()?.schoolId}}/news/new">Create new news</button>
+    </div>
 </div>
+
 
 
 

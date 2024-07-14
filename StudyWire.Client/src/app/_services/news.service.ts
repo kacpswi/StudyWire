@@ -4,7 +4,8 @@ import { environment } from '../../environments/environment';
 import { News } from '../_models/news';
 import { PaginatedResult } from '../_models/pagination';
 import { UserParams } from '../_models/userParams';
-import { AccountService } from './account.service';
+import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class NewsService {
   private http = inject(HttpClient);
   baseUrl = environment.apiUrl;
   paginatedResults = signal<PaginatedResult<News[]> | null>(null)
+  router = inject(Router)
 
   getAllNews(userParams: UserParams){
 
@@ -62,5 +64,18 @@ export class NewsService {
         })
       }
     });
+  }
+
+  upload(model: any, schoolId: string){
+    return this.http.post(this.baseUrl + 'schools/' + schoolId + '/news', model, {observe: 'response'}).subscribe({
+      next: (response) =>{
+        const location = response.headers.get('Location')
+        console.log(this.baseUrl + location)
+        this.router.navigateByUrl('/' + location)
+      },
+      error: error =>{
+        console.log(error)
+      }
+    })
   }
 }

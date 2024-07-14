@@ -24,7 +24,6 @@ export class NewsDetailComponent implements OnInit{
     const schoolId = this.route.snapshot.paramMap.get('schoolId');
     const newsId = this.route.snapshot.paramMap.get('newsId');
     if (!newsId || !schoolId) return;
-
     this.newsesService.getNews(schoolId, newsId).subscribe({
         next: news => this.news = news
     });
