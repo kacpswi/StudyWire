@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, HostListener, inject, ViewChild } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { newNews } from '../../_models/newNews';
 import { AccountService } from '../../_services/account.service';
 import { NewsService } from '../../_services/news.service';
@@ -14,6 +14,12 @@ import { environment } from '../../../environments/environment';
   styleUrl: './news-new.component.css'
 })
 export class NewsNewComponent {
+  @ViewChild('newNews') editNews?: NgForm;
+  @HostListener('window:beforeunload', ['$event']) notify($event:any){
+    if(this.editNews?.dirty){
+      $event.returnValue = true;
+    }
+  }
   accountService = inject(AccountService);
   newsService = inject(NewsService)
   model: any = {}

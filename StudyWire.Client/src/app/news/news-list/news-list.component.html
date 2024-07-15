@@ -20,7 +20,7 @@
                         class="form-control me-3" 
                         style="width: 180px;"
                         name="searchPhrase"
-                        [(ngModel)]="userParams.searchPhrase"
+                        [(ngModel)]="newsService.userParams().searchPhrase"
                     >
                 </div>
             </div>
@@ -28,7 +28,7 @@
                 <div class="d-flex align-items-center">
                     <label class="col-form-label me-1">Sort by:</label>
                     <select name="sortBy" style="width: 100px;" class="form-select me-3"
-                        [(ngModel)]="userParams.sortBy"
+                        [(ngModel)]="newsService.userParams().sortBy"
                     >
                         @for(sort of sortByList; track sort.value){
                             <option [value]="sort.value">
@@ -80,7 +80,7 @@
                             name="direction"
                             (click)="loadNews()"
                             btnRadio="DESC"
-                            [(ngModel)]="userParams.sortDirection"
+                            [(ngModel)]="newsService.userParams().sortDirection"
                             >Descending
                         </button>
                         <button
@@ -89,7 +89,7 @@
                             name="direction"
                             (click)="loadNews()"
                             btnRadio="ASC"
-                            [(ngModel)]="userParams.sortDirection"
+                            [(ngModel)]="newsService.userParams().sortDirection"
                             >Ascending
                         </button>
                     </div>
@@ -106,7 +106,7 @@
                 <div class="d-flex my-3">
                     <label class="col-form-label me-1">News per page:</label>
                     <select name="itemsPerPage" class="form-select" style="min-width: 70px; max-width: 70px;"
-                        [(ngModel)]="userParams.pageSize"
+                        [(ngModel)]="newsService.userParams().pageSize"
                     >
                         @for(items of itemsPerPageList; track items){
                             <option [value]="items">
@@ -136,6 +136,7 @@
             [totalItems]="newsService.paginatedResults()?.pagination!.totalItems"
             [itemsPerPage]="newsService.paginatedResults()?.pagination!.itemsPerPage"
             (pageChanged)="pageChange($event)"
+            [(ngModel)]="newsService.paginatedResults()?.pagination!.currentPage"
             [maxSize]="10"
             previousText="&lsaquo;"
             nextText="&rsaquo;" 

@@ -6,6 +6,8 @@ import { authGuard } from './_guards/auth.guard';
 import { teacherGuard } from './_guards/teacher.guard';
 import { NewsNewComponent } from './news/news-new/news-new.component';
 import { UserNewsComponent } from './news/user-news/user-news.component';
+import { NewsEditComponent } from './news/news-edit/news-edit.component';
+import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -16,7 +18,8 @@ export const routes: Routes = [
         children:[
             {path: 'news', component:NewsListComponent},
             {path: 'myNews', component:UserNewsComponent},
-            {path: 'schools/:schoolId/news/new', component:NewsNewComponent, canActivate:[teacherGuard]},
+            {path: 'myNews/:newsId/edit', component:NewsEditComponent, canDeactivate:[preventUnsavedChangesGuard]},
+            {path: 'schools/:schoolId/news/new', component:NewsNewComponent, canActivate:[teacherGuard], canDeactivate:[preventUnsavedChangesGuard]},
             {path: 'schools/:schoolId/news/:newsId', component: NewsDetailComponent},
         ]
     },

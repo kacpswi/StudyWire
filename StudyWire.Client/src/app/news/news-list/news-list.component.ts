@@ -19,7 +19,7 @@ import { HasRoleDirective } from '../../_directives/has-role.directive';
 export class NewsListComponent implements OnInit {
   newsService = inject(NewsService);
   accountService = inject(AccountService);
-  userParams = new UserParams(null,null,null);
+  //userParams = new UserParams(null,null,null);
   sortByList = [{value:'CreatedAt', display: 'Date'},{value:'SchoolId', display:'School'},{value:'Author',display:'Author'}]
   itemsPerPageList = ['12','16','20']
   newsFromUserSchool: string = "true";
@@ -31,25 +31,25 @@ export class NewsListComponent implements OnInit {
   loadNews(){
     if (this.accountService.currentUser()?.schoolId == null)
     {
-      this.newsService.getAllNews(this.userParams);
+      this.newsService.getAllNews();
     }
     else if(this.newsFromUserSchool == "true"){
-      this.newsService.getNewsForSchool(this.userParams, this.accountService.currentUser()!.schoolId);
+      this.newsService.getNewsForSchool(this.accountService.currentUser()!.schoolId);
     }
     else if(this.newsFromUserSchool == "false"){
-      this.newsService.getAllNews(this.userParams);
+      this.newsService.getAllNews();
     }
   }
 
   resetFilters(){
-    this.userParams = new UserParams(null, null, null);
+    this.newsService.resetUserParams();
     this.newsFromUserSchool = "true"
     this.loadNews;
   }
 
   pageChange(event:any){
-    if(this.userParams.pageNumber !== event.page){
-      this.userParams.pageNumber = event.page;
+    if(this.newsService.userParams().pageNumber !== event.page){
+      this.newsService.userParams().pageNumber = event.page;
       this.loadNews()
     }
   }

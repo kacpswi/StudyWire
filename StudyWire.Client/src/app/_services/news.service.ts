@@ -1,11 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { News } from '../_models/news';
 import { PaginatedResult } from '../_models/pagination';
 import { UserParams } from '../_models/userParams';
-import { map } from 'rxjs';
+import { map, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,25 +14,39 @@ import { Router } from '@angular/router';
 export class NewsService {
   private http = inject(HttpClient);
   baseUrl = environment.apiUrl;
-  paginatedResults = signal<PaginatedResult<News[]> | null>(null)
-  router = inject(Router)
+  paginatedResults = signal<PaginatedResult<News[]> | null>(null);
+  newsCache = new Map();
+  userParams = signal<UserParams>(new UserParams(null,null,null)); 
+  router = inject(Router);
 
-  getAllNews(userParams: UserParams){
+  resetUserParams(){
+    this.userParams.set(new UserParams(null,null,null))
+  }
 
-    let params = this.setPaginationHeaders(userParams.pageNumber, userParams.pageSize)
+  getAllNews(){
+    const response = this.newsCache.get(Object.values(this.userParams()).join('-'));
 
-    params = params.append('searchPhrase', userParams.searchPhrase);
-    params = params.append('sortBy', userParams.sortBy);
-    params = params.append('sortDirection', userParams.sortDirection);
+    if (response) return this.setPaginatedResponse(response);
+
+    let params = this.setPaginationHeaders(this.userParams().pageNumber, this.userParams().pageSize)
+
+    params = params.append('searchPhrase', this.userParams().searchPhrase);
+    params = params.append('sortBy', this.userParams().sortBy);
+    params = params.append('sortDirection', this.userParams().sortDirection);
 
     return this.http.get<News[]>(this.baseUrl + 'news', {observe: 'response', params}).subscribe({
       next: response => {
-        this.paginatedResults.set({
-          items:response.body as News[],
-          pagination: JSON.parse(response.headers.get('Pagination')!)
-        })
+        this.setPaginatedResponse(response);
+        this.newsCache.set(Object.values(this.userParams()).join('-'),response);
       }
     });
+  }
+
+  private setPaginatedResponse(response: HttpResponse<News[]>){
+    this.paginatedResults.set({
+      items:response.body as News[],
+      pagination: JSON.parse(response.headers.get('Pagination')!)
+    })
   }
 
   private setPaginationHeaders(pageNumber: number, pageSize: number){
@@ -46,22 +61,30 @@ export class NewsService {
   }
 
   getNews(schoolId: string, newsId: string){
-    return this.http.get<News>(this.baseUrl + 'schools/' + schoolId + '/news/' + newsId);
+    const news: News = [...this.newsCache.values()]
+      .reduce((arr, elem) => arr.concat(elem.body), [])
+      .find((n: News) => n.schoolId.toString() === schoolId && n.id.toString() === newsId)
+
+    if (news) return of(news);
+
+    return this.http.get<News>(this.baseUrl + 'schools/' + schoolId + '/news/' + newsId)
   }
+  
 
-  getNewsForSchool(userParams: UserParams, schoolId: string){
-    let params = this.setPaginationHeaders(userParams.pageNumber, userParams.pageSize)
+  getNewsForSchool(schoolId: string){
+    const response = this.newsCache.get(Object.values(this.userParams()).join('-'));
+    if (response) return this.setPaginatedResponse(response);
 
-    params = params.append('searchPhrase', userParams.searchPhrase);
-    params = params.append('sortBy', userParams.sortBy);
-    params = params.append('sortDirection', userParams.sortDirection);
+    let params = this.setPaginationHeaders(this.userParams().pageNumber, this.userParams().pageSize)
+
+    params = params.append('searchPhrase', this.userParams().searchPhrase);
+    params = params.append('sortBy', this.userParams().sortBy);
+    params = params.append('sortDirection', this.userParams().sortDirection);
 
     return this.http.get<News[]>(this.baseUrl + 'schools/' + schoolId + '/news', {observe: 'response', params}).subscribe({
       next: response => {
-        this.paginatedResults.set({
-          items:response.body as News[],
-          pagination: JSON.parse(response.headers.get('Pagination')!)
-        })
+        this.setPaginatedResponse(response);
+        this.newsCache.set(Object.values(this.userParams()).join('-'),response);
       }
     });
   }
@@ -77,5 +100,9 @@ export class NewsService {
         console.log(error)
       }
     })
+  }
+
+  updateNews(news:News, schoolId: string, newsId: string){
+    return this.http.put(this.baseUrl + 'schools/' + schoolId + '/news/' + newsId, news)
   }
 }
