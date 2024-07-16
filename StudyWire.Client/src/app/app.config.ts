@@ -6,13 +6,18 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './_interceptors/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './_interceptors/loading.interceptor';
+import { provideToastr } from 'ngx-toastr';
+import { errorInterceptor } from './_interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([jwtInterceptor, loadingInterceptor])),
+    provideHttpClient(withInterceptors([jwtInterceptor, loadingInterceptor, errorInterceptor])),
     provideHttpClient(),
     provideAnimations(),
+    provideToastr({
+      positionClass: 'toast-bottom-right'
+    }),
     importProvidersFrom(NgxSpinnerModule)
   ]
 };

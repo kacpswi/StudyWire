@@ -1,28 +1,44 @@
 <div class="form-singin m-auto mt-5" style="width: 700px;">
-    @if(newNews.dirty){
+    @if(newNewsForm.touched){
         <div class="alert alert-info pb-0">
             <p><strong>Information:</strong>
                 You have made changes. Any unsaved changes will be lost.</p>
         </div>
     }
 <div class="form-singin m-auto mt-5" style="width: 700px;">
-    <form #newNews="ngForm" (ngSubmit)="create()">
-    <h1 class="h2 mb-3">Title</h1>
-    <div class="form-floating mb-1">
-        <input name="title" [(ngModel)]="model.title" type="text" class="form-control form-control-lg" id="floatingInput">
-        <label for="floatingInput">News tile</label>
-    </div>
-    <h1 class="h3 my-3">Description</h1>
-    <div class="form-floating mb-1">
-        <textarea name="description" style="min-height: 78px;" [(ngModel)]="model.description" class="form-control" rows="3"></textarea>
-        <label for="floatingInput">News short description</label>
-    </div>
-    <h1 class="h3 my-3">Content</h1>
-    <div class="mb-3 form-floating ">
-        <textarea name="content" style="min-height: 500px;" [(ngModel)]="model.content" class="form-control" rows="3"></textarea>
-        <label for="floatingInput">News content</label>
-    </div>
-    <button class="btn btn-primary py-2 mt-2 mb-5" style="width: 145px;" type="submit" [disabled]="!newNews.dirty">Upload</button>
-    <button class="btn btn-danger py-2 mt-2 mb-5 ms-2" style="width: 145px;" type="button" routerLink = '/news'>Cancel</button>
+    <form [formGroup]="newNewsForm" (ngSubmit)="create()">
+
+        <h1 class="h2 mb-3">Title</h1>
+        <app-news-form
+            [formControl]="$any(newNewsForm.controls['title'])"
+            [label]="'Title'"
+        ></app-news-form>
+
+        <h1 class="h3 my-3">Description</h1>
+        <app-news-form
+            [formControl]="$any(newNewsForm.controls['description'])"
+            [label]="'Description'"
+            [minHeight]="'78px'"
+        ></app-news-form>
+
+        <h1 class="h3 my-3">Content</h1>
+        <app-news-form
+            [formControl]="$any(newNewsForm.controls['content'])"
+            [label]="'Content'"
+            [minHeight]="'500px'"
+        ></app-news-form>
+
+        @if (validationErrors.length > 0 ) {
+            <div class="row mt-5">
+              <ul class="text-danger">
+                @for (error of validationErrors; track $index) {
+                  <li>{{error}}</li>
+                }
+              </ul>
+            </div>
+          }
+
+        <button class="btn btn-primary py-2 mt-2 mb-5" style="width: 145px;" type="submit" [disabled]="!newNewsForm.valid">Upload</button>
+        <button class="btn btn-danger py-2 mt-2 mb-5 ms-2" style="width: 145px;" type="button" routerLink = '/news'>Cancel</button>
     </form>
 </div>

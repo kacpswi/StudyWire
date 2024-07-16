@@ -1,18 +1,34 @@
 @if(!accountService.currentUser()){
-  <div class="form-singin m-auto mt-5" style="width: 300px;">
-    <form #loginForm="ngForm" (ngSubmit)="login()">
+  <div class="form-singin m-auto mt-5" style="width: 400px;">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
       <h1 class="h2 mb-3 fw-normal">Login</h1>
-      <div class="form-floating mb-1">
-        <input name="userEmail" [(ngModel)]="model.email" type="email" class="form-control" id="floatingInput">
-        <label for="floatingInput">Email address</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input name="userPassword" [(ngModel)]="model.password" type="password" class="form-control" id="floatingPassword">
-        <label for="floatingInput">Password</label>
-      </div>
-      <button class="btn btn-primary py-2 me-2" style="width: 145px;" type="submit">Login</button>
+
+      <app-text-input
+        [formControl]="$any(loginForm.controls['email'])"
+        [label]="'Email'"
+      ></app-text-input>
+
+      <app-text-input
+        [formControl]="$any(loginForm.controls['password'])"
+        [label]="'Password'"
+        [type]="'password'"
+      ></app-text-input>
+
+      @if (validationErrors.length > 0 ) {
+        <div class="row mt-5">
+          <ul class="text-danger">
+            @for (error of validationErrors; track $index) {
+              <li>{{error}}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      <button [disabled]="!loginForm.valid" class="btn btn-primary py-2 me-2" style="width: 145px;" type="submit">Login</button>
       <button class="btn btn-primary py-2" style="width: 147px;" type="button" (click)="cancel()">Cancel</button>
       <label>Don't have an account?</label> <a class="ms-2" (click)="toggleToRegister()">Signup</a>   
     </form>
   </div>
 }
+
+

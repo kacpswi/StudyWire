@@ -1,46 +1,67 @@
 <div class="d-flex align-items-center py-4">
-    <main class="form-singin m-auto" style="width: 300px;">
-      <form #registerForm="ngForm" (ngSubmit)="register()">
+    <main class="form-singin m-auto" style="width: 400px;">
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
         <h1 class="h2 mb-3 fw-normal">Sign up</h1>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" name="userEmail" [(ngModel)]="model.email">
-          <label for="floatingInput">Email address</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="password" class="form-control" name="userPassword" [(ngModel)]="model.password">
-          <label for="floatingInput">Password</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="password" class="form-control"  name="userConfirmPassword" [(ngModel)]="model.confirmPassword">
-          <label for="floatingInput">Confirm Password</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" name="userName" [(ngModel)]="model.name">
-          <label for="floatingInput">Name</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" name="userSurename" [(ngModel)]="model.surename">
-          <label for="floatingInput">Surename</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" name="userPhone" [(ngModel)]="model.phone">
-          <label for="floatingInput">Phone number</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" name="userCity" [(ngModel)]="model.city">
-          <label for="floatingInput">City</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" name="userPostalCode" [(ngModel)]="model.postalCode">
-          <label for="floatingInput">Postal Code</label>
-        </div>
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control" name="userStreet" [(ngModel)]="model.street">
-          <label for="floatingInput">Street</label>
-        </div>
-        <button class="btn btn-primary py-2 me-2" style="width: 145px;" type="submit">Register</button>
+        <app-text-input
+          [formControl]="$any(registerForm.controls['email'])"
+          [label]="'Email'"
+        ></app-text-input>
+
+        <app-text-input
+          [formControl]="$any(registerForm.controls['password'])"
+          [label]="'Password'"
+          [type]="'password'"
+        ></app-text-input>
+
+        <app-text-input
+          [formControl]="$any(registerForm.controls['confirmPassword'])"
+          [label]="'Confirm password'"
+          [type]="'password'"
+        ></app-text-input>
+
+        <app-text-input
+          [formControl]="$any(registerForm.controls['name'])"
+          [label]="'Name'"
+        ></app-text-input>
+
+         <app-text-input
+          [formControl]="$any(registerForm.controls['surename'])"
+          [label]="'Surename'"
+        ></app-text-input>
+
+        <app-text-input
+          [formControl]="$any(registerForm.controls['phone'])"
+          [label]="'Phone'"
+        ></app-text-input>
+
+       <app-text-input
+          [formControl]="$any(registerForm.controls['city'])"
+          [label]="'City'"
+        ></app-text-input>
+
+        <app-text-input
+          [formControl]="$any(registerForm.controls['postalCode'])"
+          [label]="'Postal code'"
+        ></app-text-input>
+
+        <app-text-input
+          [formControl]="$any(registerForm.controls['street'])"
+          [label]="'Street'"
+        ></app-text-input>
+
+        @if (validationErrors.length > 0 ) {
+          <div class="alert alert-danger pb-0">
+            <ul>
+              @for (error of validationErrors; track $index) {
+                <li>{{error}}</li>
+              }
+            </ul>
+          </div>
+        }
+
+        <button [disabled]="!registerForm.valid" class="btn btn-primary py-2 me-2" style="width: 145px;" type="submit">Register</button>
         <button class="btn btn-primary py-2" style="width: 147px;" (click)="cancel()" type="button">Cancel</button>
         <label>Already have an account?</label> <a class="ms-2" (click)="toggleToLogin()">Login</a>   
       </form>
     </main>
-  </div>
+</div>

@@ -22,9 +22,19 @@
             <textarea name="content" style="min-height: 500px;" [(ngModel)]="news.content" class="form-control" rows="3"></textarea>
             <label for="floatingInput">News content</label>
         </div>
+
+        @if (validationErrors.length > 0 ) {
+            <div class="row mt-5">
+              <ul class="text-danger">
+                @for (error of validationErrors; track $index) {
+                  <li>{{error}}</li>
+                }
+              </ul>
+            </div>
+          }
+
         <button class="btn btn-primary py-2 mt-2 mb-5" style="width: 145px;" type="submit" [disabled]="!editNews.dirty">Save changes</button>
         <button class="btn btn-danger py-2 mt-2 mb-5 ms-2" style="width: 145px;" type="button" routerLink = '/myNews'>Cancel</button>
         </form>
     </div>
 }
-

@@ -23,6 +23,7 @@ export class NewsEditComponent implements OnInit{
   private accountService = inject(AccountService);
   private newsService = inject(NewsService);
   private route = inject(ActivatedRoute);
+  validationErrors: string[] = [];
   newsId: string | null = null;
 
   ngOnInit(): void {
@@ -37,7 +38,12 @@ export class NewsEditComponent implements OnInit{
     }
     else{
       this.newsService.getNews(user!.schoolId, this.newsId!).subscribe({
-        next: news => this.news = news
+        next: news => {
+          this.news = news
+        },
+        error: error =>{
+          this.validationErrors = error;
+        }
     });
     }
   }

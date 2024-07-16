@@ -24,7 +24,7 @@ export class NewsService {
   }
 
   getAllNews(){
-    const response = this.newsCache.get(Object.values(this.userParams()).join('-'));
+    const response = this.newsCache.get(Object.values(this.userParams()).join('-')+'-allSchools');
 
     if (response) return this.setPaginatedResponse(response);
 
@@ -37,7 +37,7 @@ export class NewsService {
     return this.http.get<News[]>(this.baseUrl + 'news', {observe: 'response', params}).subscribe({
       next: response => {
         this.setPaginatedResponse(response);
-        this.newsCache.set(Object.values(this.userParams()).join('-'),response);
+        this.newsCache.set(Object.values(this.userParams()).join('-')+'-allSchools',response);
       }
     });
   }
@@ -72,7 +72,7 @@ export class NewsService {
   
 
   getNewsForSchool(schoolId: string){
-    const response = this.newsCache.get(Object.values(this.userParams()).join('-'));
+    const response = this.newsCache.get(Object.values(this.userParams()).join('-')+'-mySchool');
     if (response) return this.setPaginatedResponse(response);
 
     let params = this.setPaginationHeaders(this.userParams().pageNumber, this.userParams().pageSize)
@@ -84,22 +84,13 @@ export class NewsService {
     return this.http.get<News[]>(this.baseUrl + 'schools/' + schoolId + '/news', {observe: 'response', params}).subscribe({
       next: response => {
         this.setPaginatedResponse(response);
-        this.newsCache.set(Object.values(this.userParams()).join('-'),response);
+        this.newsCache.set(Object.values(this.userParams()).join('-')+'-mySchool',response);
       }
     });
   }
 
   upload(model: any, schoolId: string){
-    return this.http.post(this.baseUrl + 'schools/' + schoolId + '/news', model, {observe: 'response'}).subscribe({
-      next: (response) =>{
-        const location = response.headers.get('Location')
-        console.log(this.baseUrl + location)
-        this.router.navigateByUrl('/' + location)
-      },
-      error: error =>{
-        console.log(error)
-      }
-    })
+    return this.http.post(this.baseUrl + 'schools/' + schoolId + '/news', model, {observe: 'response'})
   }
 
   updateNews(news:News, schoolId: string, newsId: string){
