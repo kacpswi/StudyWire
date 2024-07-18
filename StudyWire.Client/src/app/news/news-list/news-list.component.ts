@@ -25,7 +25,10 @@ export class NewsListComponent implements OnInit {
   newsFromUserSchool: string = "true";
 
   ngOnInit(): void {
-    if (!this.newsService.paginatedResults()) this.loadNews();
+    if (!this.newsService.paginatedResults() || this.newsService.newsCacheChanged()){
+      this.loadNews();
+      this.newsService.newsCacheChanged.set(false);
+    }
   }
 
   loadNews(){

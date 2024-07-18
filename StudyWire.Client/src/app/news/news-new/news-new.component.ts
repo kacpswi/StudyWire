@@ -1,12 +1,12 @@
 import { Component, HostListener, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
-import { newNews } from '../../_models/newNews';
 import { AccountService } from '../../_services/account.service';
 import { NewsService } from '../../_services/news.service';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { TextInputComponent } from '../../_forms/text-input/text-input.component';
 import { NewsFormComponent } from '../../_forms/news-form/news-form.component';
+import { ToastrService } from 'ngx-toastr';
+import { News } from '../../_models/news';
 
 @Component({
   selector: 'app-news-new',
@@ -23,6 +23,7 @@ export class NewsNewComponent implements OnInit {
     }
   }
   private fb = inject(FormBuilder);
+  private toastr = inject(ToastrService);
   accountService = inject(AccountService);
   newsService = inject(NewsService)
   model: any = {}
@@ -49,8 +50,10 @@ export class NewsNewComponent implements OnInit {
     {
       this.newsService.upload(this.newNewsForm.value, this.accountService.currentUser()!.schoolId).subscribe({
         next: (response) =>{
-          const location = response.headers.get('Location')
-          this.router.navigateByUrl('/' + location)
+          this.toastr.success('Created news');
+          this.newsService.userNews()?.push(response.body as News)
+          const location = response.headers.get('Location');
+          this.router.navigateByUrl('/' + location);
         },
         error: error =>{
           this.validationErrors = error;

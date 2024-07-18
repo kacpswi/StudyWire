@@ -4,6 +4,7 @@ import { AccountService } from '../../_services/account.service';
 import { NewsService } from '../../_services/news.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-news-edit',
@@ -23,8 +24,10 @@ export class NewsEditComponent implements OnInit{
   private accountService = inject(AccountService);
   private newsService = inject(NewsService);
   private route = inject(ActivatedRoute);
+  private toastr = inject(ToastrService);
   validationErrors: string[] = [];
   newsId: string | null = null;
+
 
   ngOnInit(): void {
     this.loadNews();
@@ -53,6 +56,7 @@ export class NewsEditComponent implements OnInit{
     {
       this.newsService.updateNews(this.editNews?.value, this.accountService.currentUser()!.schoolId, this.newsId!).subscribe({
         next: _ =>{
+          this.toastr.success("News updated.")
           this.editNews?.reset(this.news);
         }
       })

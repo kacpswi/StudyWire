@@ -3,7 +3,7 @@
         <h2>Check out news</h2>
     </div>
     <div *appHasRole="['Teacher']" class="col-2 d-flex justify-content-end align-items-right">
-        <button class="btn btn-primary" routerLink="/schools/{{accountService.currentUser()?.schoolId}}/news/new">Create new news</button>
+        <button class="btn btn-success" routerLink="/schools/{{accountService.currentUser()?.schoolId}}/news/new">Create new news</button>
     </div>
 </div>
 
@@ -45,7 +45,7 @@
                         <div class="d-flex">
                             <button
                                 type="button"
-                                class="btn btn-primary"
+                                class="btn btn-info"
                                 name="newsFrom"
                                 (click)="loadNews()"
                                 btnRadio="true"
@@ -53,7 +53,7 @@
                             >Your school</button>
                             <button
                                 type="button"
-                                class="btn btn-primary"
+                                class="btn btn-info"
                                 name="newsFrom"
                                 (click)="loadNews()"
                                 btnRadio="false"
@@ -65,8 +65,8 @@
             }
             <div class="col mb-3">
                 <div class="d-flex">
-                    <button class="btn btn-primary me-1" type="submit">Apply filters</button>
-                    <button (click)="resetFilters()" class="btn btn-info" type="submit">Reset filters</button>
+                    <button class="btn btn-success me-1" type="submit">Apply filters</button>
+                    <button (click)="resetFilters()" class="btn btn-danger" type="submit">Reset filters</button>
                 </div>
 
             </div>
@@ -76,7 +76,7 @@
                     <div class="d-flex">
                         <button
                             type="button"
-                            class="btn btn-primary"
+                            class="btn btn-info"
                             name="direction"
                             (click)="loadNews()"
                             btnRadio="DESC"
@@ -85,7 +85,7 @@
                         </button>
                         <button
                             type="button"
-                            class="btn btn-primary"
+                            class="btn btn-info"
                             name="direction"
                             (click)="loadNews()"
                             btnRadio="ASC"

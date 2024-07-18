@@ -1,6 +1,7 @@
 export interface User{
+    id: number
     name: string;
     surename: string;
     token: string;
-    schoolId: string;
+    schoolId: number;
 }

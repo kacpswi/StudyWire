@@ -6,22 +6,22 @@
         </div>
         <div class="col-1 d-flex justify-content-end align-items-right flex-nowrap">
           @if(accountService.currentUser()){
-            <a class="btn btn-sm btn-outline-secondary" (click)="logout()">Logout</a>
+            <a class="btn btn-sm btn-secondary" (click)="logout()">Logout</a>
           }
         </div>
       </div>
     </header>
     
     @if(accountService.currentUser()){
-      <div class="nav-scroller py-1 mb-3 border-bottom">
-        <nav class="nav nav-underline justify-content-between">
+      <div class="nav-scroller py-1 mb-3 border-bottom" id="navbarColor01" data-bs-theme="dark">
+        <div class="nav nav-underline justify-content-between" >
           <a routerLink="/news" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">News</a>
           <a *appHasRole="['Teacher']" routerLink="/myNews" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Your news</a>
           <a *appHasRole="['Student']" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Grades</a>
           <a *appHasRole="['Student']" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Homeworks</a>
           <a *appHasRole="['Student']" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Timetable</a>
           <a routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Documents</a>
-        </nav>
+        </div>
       </div>
     }
 

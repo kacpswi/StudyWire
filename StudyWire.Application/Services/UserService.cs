@@ -50,6 +50,7 @@ namespace StudyWire.Application.Services
 
             var userDto = new ReturnLoginUserDto()
             {
+                Id = user.Id,
                 Name = user.Name,
                 Surename = user.Surename,
                 Token = token,
@@ -93,6 +94,7 @@ namespace StudyWire.Application.Services
             var token = await _tokenService.CreateToken(user);
             return new ReturnLoginUserDto()
             {
+                Id = user.Id,
                 Name = user.UserName,
                 Surename = user.Surename,
                 Token = token,

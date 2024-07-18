@@ -3,14 +3,18 @@
         <h2>Your News</h2>
     </div>
     <div *appHasRole="['Teacher']" class="col-2">
-        <button class="btn btn-primary" routerLink="/schools/{{accountService.currentUser()?.schoolId}}/news/new">Create new news</button>
+        <button class="btn btn-success" routerLink="/schools/{{accountService.currentUser()?.schoolId}}/news/new">Create new news</button>
     </div>
 </div>
 
 <div class="row">
-    @for (news of accountService.userNews(); track news.id) {
+    @for (news of newsService.userNews(); track news.id) {
         <div class="col-sm-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
-            <app-user-news-card [news]="news"></app-user-news-card>
+            <app-user-news-card
+                (delete)="reload($event)"
+                [news]="news"
+            >
+            </app-user-news-card>
         </div>
     }
 </div>
