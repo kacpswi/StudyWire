@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudyWire.Application.DTOsModel.User;
 using StudyWire.Domain.Entities;
+using StudyWire.Domain.Exceptions;
 using StudyWire.Infrastructure.Presistence;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace StudyWire.Infrastructure.Seeders
                 {
                 new IdentityRole<int>{Name = "Guest"},
                 new IdentityRole<int>{Name = "Teacher"},
+                new IdentityRole<int>{Name = "School-Admin"},
                 new IdentityRole<int>{Name = "Admin"},
                 new IdentityRole<int>{Name = "Parent"},
                 new IdentityRole<int>{Name = "Student"},
@@ -132,6 +134,16 @@ namespace StudyWire.Infrastructure.Seeders
                 };
                 var adminResult = await userManager.CreateAsync(admin, "Pa$$w0rd");
                 await userManager.AddToRolesAsync(admin, new[] { "Admin" });
+
+                var schoolAdmin = new AppUser
+                {
+                    UserName = "schoolAdmin",
+                    Name = "school",
+                    Surename = "admin",
+                    Email = "schoolAdmin"
+                };
+                var schoolAdminResult = await userManager.CreateAsync(schoolAdmin, "Pa$$w0rd");
+                await userManager.AddToRolesAsync(schoolAdmin, new[] { "School-Admin" });
 
 
             }

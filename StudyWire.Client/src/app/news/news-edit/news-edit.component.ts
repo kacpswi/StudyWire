@@ -58,6 +58,9 @@ export class NewsEditComponent implements OnInit{
         next: _ =>{
           this.toastr.success("News updated.")
           this.editNews?.reset(this.news);
+        },
+        error: error =>{
+          this.validationErrors = error;
         }
       })
       

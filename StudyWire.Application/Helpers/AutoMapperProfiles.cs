@@ -26,6 +26,7 @@ namespace StudyWire.Application.Helpers
             CreateMap<PostSchoolDto, School>()
                 .ForMember(a => a.Address, s => s.MapFrom(dto => new Address()
                 { City = dto.City, PostalCode = dto.PostalCode, Street = dto.Street, PhoneNumber = dto.PhoneNumber }));
+
         }
     }
 }

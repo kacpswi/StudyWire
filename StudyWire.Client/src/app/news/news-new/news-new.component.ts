@@ -39,9 +39,9 @@ export class NewsNewComponent implements OnInit {
 
   initializeForm(){
     this.newNewsForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['',[Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
-      content: ['', [Validators.required]],
+      title: ['', [Validators.required, Validators.maxLength(70)]],
+      description: ['',[Validators.required, Validators.maxLength(100)]],
+      content: ['', [Validators.required, Validators.minLength(200)]],
     });
   }
 

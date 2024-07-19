@@ -50,7 +50,7 @@
         ></app-text-input>
 
         @if (validationErrors.length > 0 ) {
-          <div class="alert alert-danger pb-0">
+          <div class="alert alert-danger pb-1">
             <ul>
               @for (error of validationErrors; track $index) {
                 <li>{{error}}</li>

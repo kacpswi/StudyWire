@@ -19,6 +19,7 @@ namespace StudyWire.API.Controllers
 
         [HttpGet]
         [Route("{schoolId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ReturnSchoolDto>> GetSchoolById([FromRoute] int schoolId)
         {
             var result = await _schoolService.GetSchoolByIdAsync(schoolId);
@@ -26,6 +27,7 @@ namespace StudyWire.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<ReturnSchoolDto>>> GetAllSchools()
         {
             var result = await _schoolService.GetSchoolsAsync();
@@ -33,7 +35,7 @@ namespace StudyWire.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "School-Admin")]
         public async Task<ActionResult> PostNewSchool([FromBody] PostSchoolDto schoolDto)
         {
             int userId = User.GetUserId();
@@ -43,7 +45,7 @@ namespace StudyWire.API.Controllers
 
         [HttpPut]
         [Route("{schoolId}")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "School-Admin")]
         public async Task<ActionResult<ReturnSchoolDto>> UpdateSchool([FromBody] PostSchoolDto schooltDto, [FromRoute] int schoolId)
         {
             int userId = User.GetUserId();
@@ -53,7 +55,7 @@ namespace StudyWire.API.Controllers
 
         [HttpDelete]
         [Route("{schoolId}")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "School-Admin")]
         public async Task<ActionResult> DeleteSchool([FromRoute]int schoolId)
         {
             int userId = User.GetUserId();
@@ -61,8 +63,5 @@ namespace StudyWire.API.Controllers
 
             return NoContent();
         }
-
-
-
     }
 }

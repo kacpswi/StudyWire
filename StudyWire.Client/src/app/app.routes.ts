@@ -10,6 +10,9 @@ import { NewsEditComponent } from './news/news-edit/news-edit.component';
 import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { schoolAdminGuard } from './_guards/school-admin.guard';
+import { SchoolDetailsComponent } from './schools/school-details/school-details.component';
+import { SchoolNewComponent } from './schools/school-new/school-new.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -21,6 +24,8 @@ export const routes: Routes = [
             {path: 'news', component:NewsListComponent},
             {path: 'myNews', component:UserNewsComponent, canActivate:[teacherGuard]},
             {path: 'myNews/:newsId/edit', component:NewsEditComponent, canDeactivate:[preventUnsavedChangesGuard]},
+            {path: 'mySchool', component:SchoolDetailsComponent, canActivate:[schoolAdminGuard]},
+            {path: 'mySchool/new', component:SchoolNewComponent, canActivate:[schoolAdminGuard]},
             {path: 'schools/:schoolId/news/new', component:NewsNewComponent, canActivate:[teacherGuard], canDeactivate:[preventUnsavedChangesGuard]},
             {path: 'schools/:schoolId/news/:newsId', component: NewsDetailComponent},
         ]

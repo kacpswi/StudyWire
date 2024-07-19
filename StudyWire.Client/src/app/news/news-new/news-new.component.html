@@ -29,8 +29,8 @@
         ></app-news-form>
 
         @if (validationErrors.length > 0 ) {
-            <div class="row mt-5">
-              <ul class="text-danger">
+            <div class="alert alert-danger pb-1">
+              <ul>
                 @for (error of validationErrors; track $index) {
                   <li>{{error}}</li>
                 }

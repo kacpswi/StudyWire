@@ -29,6 +29,7 @@ namespace StudyWire.Application.Services
         public async Task<int> CreateNewsAsync(PostNewsDto newsDto, int userId, int schoolId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
+
             if (user == null) throw new NotFoundException("User not found");
 
             if (user.SchoolId != schoolId) throw new BadRequestException("Cannot post other schools' news");

@@ -17,6 +17,7 @@
         <div class="nav nav-underline justify-content-between" >
           <a routerLink="/news" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">News</a>
           <a *appHasRole="['Teacher']" routerLink="/myNews" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Your news</a>
+          <a *appHasRole="['School-Admin']" routerLink="/mySchool" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Manage school</a>
           <a *appHasRole="['Student']" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Grades</a>
           <a *appHasRole="['Student']" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Homeworks</a>
           <a *appHasRole="['Student']" routerLinkActive="active" class="nav-item nav-link link-body-emphasis">Timetable</a>

@@ -10,15 +10,10 @@ namespace StudyWire.Application.DTOsModel.School
 {
     public class PostSchoolDto
     {
-        [Required]
         public string Name { get; set; }
-        [Required]
         public string PhoneNumber { get; set; }
-        [Required]
         public string Street { get; set; }
-        [Required]
         public string City { get; set; }
-        [Required]
         public string PostalCode { get; set; }
     }
 }
