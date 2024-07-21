@@ -2,7 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { NewsService } from '../../_services/news.service';
 import { NewsCardComponent } from "../news-card/news-card.component";
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { UserParams } from '../../_models/userParams';
 import { FormsModule } from '@angular/forms';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AccountService } from '../../_services/account.service';
@@ -19,10 +18,9 @@ import { HasRoleDirective } from '../../_directives/has-role.directive';
 export class NewsListComponent implements OnInit {
   newsService = inject(NewsService);
   accountService = inject(AccountService);
-  //userParams = new UserParams(null,null,null);
   sortByList = [{value:'CreatedAt', display: 'Date'},{value:'SchoolId', display:'School'},{value:'Author',display:'Author'}]
   itemsPerPageList = ['12','16','20']
-  newsFromUserSchool: string = "true";
+  newsFrom: string = "userSchool";
 
   ngOnInit(): void {
     if (!this.newsService.paginatedResults() || this.newsService.newsCacheChanged()){
@@ -36,17 +34,17 @@ export class NewsListComponent implements OnInit {
     {
       this.newsService.getAllNews();
     }
-    else if(this.newsFromUserSchool == "true"){
+    else if(this.newsFrom == "userSchool"){
       this.newsService.getNewsForSchool(this.accountService.currentUser()!.schoolId);
     }
-    else if(this.newsFromUserSchool == "false"){
+    else if(this.newsFrom == "allSchools"){
       this.newsService.getAllNews();
     }
   }
 
   resetFilters(){
     this.newsService.resetUserParams();
-    this.newsFromUserSchool = "true"
+    this.newsFrom = "userSchool"
     this.loadNews;
   }
 

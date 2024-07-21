@@ -2,7 +2,7 @@ import { Component, HostListener, inject, OnInit, ViewChild } from '@angular/cor
 import { News } from '../../_models/news';
 import { AccountService } from '../../_services/account.service';
 import { NewsService } from '../../_services/news.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
@@ -14,19 +14,20 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './news-edit.component.css'
 })
 export class NewsEditComponent implements OnInit{
-  @ViewChild('editNews') editNews?: NgForm;
+  @ViewChild('form') form?: NgForm;
   @HostListener('window:beforeunload', ['$event']) notify($event:any){
-    if(this.editNews?.dirty){
+    if(this.form?.dirty){
       $event.returnValue = true;
     }
   }
-  news: News | null = null;
   private accountService = inject(AccountService);
   private newsService = inject(NewsService);
   private route = inject(ActivatedRoute);
   private toastr = inject(ToastrService);
+  private router = inject(Router);
   validationErrors: string[] = [];
   newsId: string | null = null;
+  news: News | null = null;
 
 
   ngOnInit(): void {
@@ -54,10 +55,10 @@ export class NewsEditComponent implements OnInit{
   edit(){
     if (this.newsId)
     {
-      this.newsService.updateNews(this.editNews?.value, this.accountService.currentUser()!.schoolId, this.newsId!).subscribe({
+      this.newsService.updateNews(this.form?.value, this.accountService.currentUser()!.schoolId, this.newsId!).subscribe({
         next: _ =>{
           this.toastr.success("News updated.")
-          this.editNews?.reset(this.news);
+          this.form?.reset(this.news);
         },
         error: error =>{
           this.validationErrors = error;

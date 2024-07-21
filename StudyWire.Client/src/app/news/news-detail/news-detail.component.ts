@@ -5,7 +5,6 @@ import { News } from '../../_models/news';
 import { CommonModule } from '@angular/common';
 import { AccountService } from '../../_services/account.service';
 import { NewsCardComponent } from '../news-card/news-card.component';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-news-detail',

@@ -4,6 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { NewsService } from '../../_services/news.service';
 import { AccountService } from '../../_services/account.service';
 import { ToastrService } from 'ngx-toastr';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { DeleteModalComponent } from '../../modals/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-user-news-card',
@@ -16,10 +18,30 @@ export class UserNewsCardComponent {
   private newsService = inject(NewsService);
   private accountService = inject(AccountService)
   private toastr = inject(ToastrService);
+  private modalService = inject(BsModalService);
   news = input.required<News>();
   router = inject(Router);
   delete = output<boolean>();
-  
+  bsModalRef: BsModalRef<DeleteModalComponent> = new BsModalRef<DeleteModalComponent>();
+
+  openDeleteModal(){
+    const inisialState: ModalOptions =
+    {
+      class: 'modal-mg',
+      initialState: {
+        deleteNews: false
+      }
+    }
+    this.bsModalRef = this.modalService.show(DeleteModalComponent, inisialState);
+    this.bsModalRef.onHide?.subscribe({
+      next: () => {
+        if(this.bsModalRef.content && this.bsModalRef.content.deleteNews)
+        {
+          this.deleteNews()
+        }
+      }
+    })
+  }
 
   goToEdit(){
     this.router.navigateByUrl('myNews/' + this.news().id + '/edit');

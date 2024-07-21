@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, HostListener, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AccountService } from '../../_services/account.service';
 import { NewsService } from '../../_services/news.service';
@@ -15,10 +15,10 @@ import { News } from '../../_models/news';
   templateUrl: './news-new.component.html',
   styleUrl: './news-new.component.css'
 })
-export class NewsNewComponent implements OnInit {
-  @ViewChild('newNews') editNews?: NgForm;
+export class NewsNewComponent implements OnInit, AfterViewInit {
+  @ViewChild('newNewsForm') newNews?: FormGroup;
   @HostListener('window:beforeunload', ['$event']) notify($event:any){
-    if(this.editNews?.dirty){
+    if(this.newNews?.dirty){
       $event.returnValue = true;
     }
   }
@@ -37,6 +37,10 @@ export class NewsNewComponent implements OnInit {
     this.initializeForm();
   }
 
+  ngAfterViewInit(): void {
+    this.newNews = this.newNewsForm
+  }
+
   initializeForm(){
     this.newNewsForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(70)]],
@@ -52,6 +56,7 @@ export class NewsNewComponent implements OnInit {
         next: (response) =>{
           this.toastr.success('Created news');
           this.newsService.userNews()?.push(response.body as News)
+          this.newNewsForm.reset();
           const location = response.headers.get('Location');
           this.router.navigateByUrl('/' + location);
         },

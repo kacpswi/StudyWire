@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
 import { HasRoleDirective } from '../../_directives/has-role.directive';
 import { UserNewsCardComponent } from '../user-news-card/user-news-card.component';
 import { NewsService } from '../../_services/news.service';
-import { News } from '../../_models/news';
 
 @Component({
   selector: 'app-user-news',

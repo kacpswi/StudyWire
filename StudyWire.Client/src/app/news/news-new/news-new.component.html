@@ -1,5 +1,5 @@
 <div class="form-singin m-auto mt-5" style="width: 700px;">
-    @if(newNewsForm.touched){
+    @if(newNewsForm.dirty){
         <div class="alert alert-info pb-1">
             <p><strong>Information:</strong>
                 You have made changes. Any unsaved changes will be lost.</p>
@@ -39,6 +39,6 @@
           }
 
         <button class="btn btn-primary py-2 mt-2 mb-5" style="width: 145px;" type="submit" [disabled]="!newNewsForm.valid">Upload</button>
-        <button class="btn btn-danger py-2 mt-2 mb-5 ms-2" style="width: 145px;" type="button" routerLink = '/news'>Cancel</button>
+        <button class="btn btn-danger py-2 mt-2 mb-5 ms-2" style="width: 145px;" type="button" routerLink="/news">Cancel</button>
     </form>
 </div>

@@ -1,9 +1,9 @@
 export class UserParams{
-    searchPhrase: string;
+    searchPhrase: string = "";
     pageNumber = 1;
     pageSize = 20;
-    sortBy: string;
-    sortDirection: string;
+    sortBy: string = "CreatedAt";
+    sortDirection: string = "DESC";
 
     constructor(serachPhrase:string|null, sortBy:string|null, sortDirection:string|null) {
         if (serachPhrase == null){

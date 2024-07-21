@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-delete-modal',
@@ -8,5 +9,11 @@ import { Component } from '@angular/core';
   styleUrl: './delete-modal.component.css'
 })
 export class DeleteModalComponent {
+  bsModalRef = inject(BsModalRef);
+  deleteNews = false;
 
+  onDeleteClick(){
+    this.deleteNews = true;
+    this.bsModalRef.hide();
+  }
 }

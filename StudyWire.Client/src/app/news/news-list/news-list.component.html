@@ -48,16 +48,16 @@
                                 class="btn btn-info"
                                 name="newsFrom"
                                 (click)="loadNews()"
-                                btnRadio="true"
-                                [(ngModel)]="this.newsFromUserSchool"
+                                btnRadio="userSchool"
+                                [(ngModel)]="this.newsFrom"
                             >Your school</button>
                             <button
                                 type="button"
                                 class="btn btn-info"
                                 name="newsFrom"
                                 (click)="loadNews()"
-                                btnRadio="false"
-                                [(ngModel)]="this.newsFromUserSchool"
+                                btnRadio="allSchools"
+                                [(ngModel)]="this.newsFrom"
                             >All schools</button>
                         </div>
                     </div>
