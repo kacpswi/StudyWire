@@ -1,0 +1,19 @@
+<div class="form-floating mb-1">
+    <textarea 
+      [class.is-invalid]="control.touched && control.invalid"
+      class="form-control" 
+      [formControl]="control"
+      [style.minHeight] = "minHeight()"
+      style="background-color: #333 !important; color: white !important"
+    >
+    </textarea>
+    <label for="floatingInput">{{label()}}</label>
+    <div *ngIf="control.hasError('required')" 
+        class="invalid-feedback">Please enter a {{label()}}</div>
+    <div *ngIf="control.hasError('minlength')" 
+        class="invalid-feedback">{{label()}} must be at least {{control.errors?.['minlength'].requiredLength}} characters</div>
+    <div *ngIf="control.hasError('maxlength')" 
+        class="invalid-feedback">{{label()}} must be at most {{control.errors?.['maxlength'].requiredLength}} characters</div>
+    <div *ngIf="control.hasError('isMatching')" 
+        class="invalid-feedback">{{label()}} do not match</div>
+</div>

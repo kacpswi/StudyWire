@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using StudyWire.Application.DTOsModel.News;
-using StudyWire.Application.Exceptions;
+using StudyWire.Application.Helpers.Pagination;
 using StudyWire.Application.Services.Interfaces;
 using StudyWire.Domain.Entities;
 using StudyWire.Domain.Interfaces;
@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StudyWire.Domain.Exceptions;
 
 namespace StudyWire.Application.Services
 {
@@ -28,15 +29,19 @@ namespace StudyWire.Application.Services
         public async Task<int> CreateNewsAsync(PostNewsDto newsDto, int userId, int schoolId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user.SchoolId != schoolId) throw new BadRequestException("Cannot post other schools' newses");
+
+            if (user == null) throw new NotFoundException("User not found");
+
+            if (user.SchoolId != schoolId) throw new BadRequestException("Cannot post other schools' news");
 
             var news = _mapper.Map<News>(newsDto);
             news.Author = user.Name + " " + user.Surename;
             news.SchoolId = (int)user.SchoolId;
+            news.CreatedById = userId;
 
-            await _newsRepository.AddNews(news);
+            await _newsRepository.AddNewsAsync(news);
 
-            if (!await _newsRepository.Save()) throw new BadRequestException("Failed to post news");
+            if (!await _newsRepository.SaveAsync()) throw new BadRequestException("Failed to post news");
 
             return news.Id;
         }
@@ -46,20 +51,21 @@ namespace StudyWire.Application.Services
             var news = await _newsRepository.GetNewsByIdAsync(newsId);
             if (news == null) throw new NotFoundException("News not found");
 
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user.SchoolId != news.SchoolId || schoolId != user.SchoolId)
-                throw new BadRequestException("Cannot delete other schools' newses");
+            if (userId != news.CreatedById)
+                throw new BadRequestException("Cannot delete others news");
 
             _newsRepository.DeleteNews(news);
-            if(!await  _newsRepository.Save()) throw new BadRequestException("Unable to delete news");
+            if(!await  _newsRepository.SaveAsync()) throw new BadRequestException("Unable to delete news");
 
         }
 
-        public async Task<IEnumerable<ReturnNewsDto>> GetAllNewsAsync()
+        public async Task<PagedResult<ReturnNewsDto>> GetAllNewsAsync(PagedQuery query)
         {
-            var newses = await _newsRepository.GetAllNewsesAsync();
-            var dtos = _mapper.Map<IEnumerable<ReturnNewsDto>>(newses);
-            return dtos;
+            var paginationResult = await _newsRepository.GetAllNewsAsync(query.SearchPhrase, query.PageSize, query.PageNumber, query.SortBy, query.SortDirection);
+            var dtos = _mapper.Map<IEnumerable<ReturnNewsDto>>(paginationResult.Item1);
+
+            var result = new PagedResult<ReturnNewsDto>(dtos, paginationResult.Item2, query.PageSize, query.PageNumber);
+            return result;
         }
 
         public async Task<ReturnNewsDto> GetNewsByIdAsync(int schoolId, int newsId)
@@ -73,10 +79,12 @@ namespace StudyWire.Application.Services
             return _mapper.Map<ReturnNewsDto>(news);
         }
 
-        public async Task<IEnumerable<ReturnNewsDto>> GetNewsBySchoolIdAsync(int schoolId)
+        public async Task<PagedResult<ReturnNewsDto>> GetNewsBySchoolIdAsync(PagedQuery query, int schoolId)
         {
-            var newses = await _newsRepository.GetAllNewsesBySchoolIdAsync(schoolId);
-            var result = _mapper.Map<IEnumerable<ReturnNewsDto>>(newses);
+            var paginationResult = await _newsRepository.GetAllNewsBySchoolIdAsync(query.SearchPhrase, query.PageSize, query.PageNumber, query.SortBy, query.SortDirection, schoolId);
+            var dtos = _mapper.Map<IEnumerable<ReturnNewsDto>>(paginationResult.Item1);
+
+            var result = new PagedResult<ReturnNewsDto>(dtos, paginationResult.Item2, query.PageSize, query.PageNumber);
             return result;
         }
 
@@ -85,13 +93,12 @@ namespace StudyWire.Application.Services
             var news = await _newsRepository.GetNewsByIdAsync(newsId);
             if (news != null)
             {
-                var user = await _userManager.FindByIdAsync(userId.ToString());
-                if (user.SchoolId != news.SchoolId || schoolId != user.SchoolId)
-                    throw new BadRequestException("Cannot edit other schools' newses");
+                if (userId != news.CreatedById)
+                    throw new BadRequestException("Cannot edit others news");
 
                 var newNews = _mapper.Map(newsDto, news);
 
-                if (!await _newsRepository.Save())
+                if (!await _newsRepository.SaveAsync())
                     throw new BadRequestException("Unable to update news");
 
                 var newNewsDto = _mapper.Map<ReturnNewsDto>(newNews);

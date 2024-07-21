@@ -10,5 +10,9 @@ namespace StudyWire.Domain.Interfaces
     public interface ISchoolRepository
     {
         public Task<School?> GetSchoolByIdAsync(int schoolId);
+        public Task<IEnumerable<School?>> GetAllSchoolsAsync();
+        public Task AddSchoolAsync(School school);
+        public void DeleteSchool(School school);
+        public Task<bool> SaveAsync();
     }
 }

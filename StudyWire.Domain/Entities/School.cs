@@ -10,6 +10,7 @@ namespace StudyWire.Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int CreatedById { get; set; }
         public Address Address { get; set; }
         public List<AppUser> Members { get; set; }
         public List<News> News { get; set; }

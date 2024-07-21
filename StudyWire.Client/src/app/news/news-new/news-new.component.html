@@ -1,0 +1,44 @@
+<div class="form-singin m-auto mt-5" style="width: 700px;">
+    @if(newNewsForm.dirty){
+        <div class="alert alert-info pb-1">
+            <p><strong>Information:</strong>
+                You have made changes. Any unsaved changes will be lost.</p>
+        </div>
+    }
+<div class="form-singin m-auto mt-5" style="width: 700px;">
+    <form [formGroup]="newNewsForm" (ngSubmit)="create()">
+
+        <h1 class="h2 mb-3">Title</h1>
+        <app-news-form
+            [formControl]="$any(newNewsForm.controls['title'])"
+            [label]="'Title'"
+        ></app-news-form>
+
+        <h1 class="h3 my-3">Description</h1>
+        <app-news-form
+            [formControl]="$any(newNewsForm.controls['description'])"
+            [label]="'Description'"
+            [minHeight]="'78px'"
+        ></app-news-form>
+
+        <h1 class="h3 my-3">Content</h1>
+        <app-news-form
+            [formControl]="$any(newNewsForm.controls['content'])"
+            [label]="'Content'"
+            [minHeight]="'500px'"
+        ></app-news-form>
+
+        @if (validationErrors.length > 0 ) {
+            <div class="alert alert-danger pb-1">
+              <ul>
+                @for (error of validationErrors; track $index) {
+                  <li>{{error}}</li>
+                }
+              </ul>
+            </div>
+          }
+
+        <button class="btn btn-primary py-2 mt-2 mb-5" style="width: 145px;" type="submit" [disabled]="!newNewsForm.valid">Upload</button>
+        <button class="btn btn-danger py-2 mt-2 mb-5 ms-2" style="width: 145px;" type="button" routerLink="/news">Cancel</button>
+    </form>
+</div>

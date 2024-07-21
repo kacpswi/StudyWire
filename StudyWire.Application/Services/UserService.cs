@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using StudyWire.Application.DTOsModel.News;
 using StudyWire.Application.DTOsModel.User;
-using StudyWire.Application.Exceptions;
 using StudyWire.Application.Services.Interfaces;
 using StudyWire.Domain.Entities;
+using StudyWire.Domain.Exceptions;
+using StudyWire.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +20,14 @@ namespace StudyWire.Application.Services
         private UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly INewsRepository _newsRepository;
 
-        public UserService(UserManager<AppUser> userManager, ITokenService tokenService, IMapper mapper)
+        public UserService(UserManager<AppUser> userManager, ITokenService tokenService, IMapper mapper, INewsRepository newsRepository)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _mapper = mapper;
+            _newsRepository = newsRepository;
         }
 
         public async Task<ReturnLoginUserDto> LoginUserAsync(LoginUserDto loginUserDto)
@@ -46,9 +50,11 @@ namespace StudyWire.Application.Services
 
             var userDto = new ReturnLoginUserDto()
             {
+                Id = user.Id,
                 Name = user.Name,
                 Surename = user.Surename,
                 Token = token,
+                SchoolId = user.SchoolId
             };
 
             return userDto;
@@ -88,12 +94,20 @@ namespace StudyWire.Application.Services
             var token = await _tokenService.CreateToken(user);
             return new ReturnLoginUserDto()
             {
+                Id = user.Id,
                 Name = user.UserName,
                 Surename = user.Surename,
-                Token = token
+                Token = token,
+                SchoolId = user.SchoolId
             };
 
 
+        }
+
+        public async Task<IEnumerable<ReturnNewsDto>> GetAllUserNewsAsync(int userId)
+        {
+            var news = await _newsRepository.GetAllUserNewsAsync(userId);
+            return _mapper.Map<IEnumerable<ReturnNewsDto>>(news);
         }
 
         private async Task<bool> UserExists(string email)

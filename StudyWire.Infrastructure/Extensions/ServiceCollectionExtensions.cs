@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using StudyWire.Application.Services;
 using StudyWire.Application.Services.Interfaces;
-using StudyWire.Application.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -16,11 +15,10 @@ using System.Reflection;
 
 namespace StudyWire.Infrastructure.Extensions
 {
-    public static class DependencyInjection
+    public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            Configuration.SetConfiguration(configuration);
             services.AddDbContext<StudyWireDbContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString("StudyWire")));
 
@@ -48,11 +46,7 @@ namespace StudyWire.Infrastructure.Extensions
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<ISchoolRepository, SchoolRepository>();
             services.AddScoped<ISchoolService, SchoolService>();
-            services.AddScoped<ErrorHandlingMiddleware>();
             services.AddCors();
-
-
-            return services;
         }
     }
 }

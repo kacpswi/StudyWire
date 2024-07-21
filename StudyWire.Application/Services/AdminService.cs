@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using StudyWire.Application.Exceptions;
 using StudyWire.Application.Services.Interfaces;
 using StudyWire.Domain.Entities;
-using StudyWire.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StudyWire.Domain.Exceptions;
+
 
 namespace StudyWire.Application.Services
 {

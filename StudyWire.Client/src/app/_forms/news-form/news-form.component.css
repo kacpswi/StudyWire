@@ -1,0 +1,15 @@
+.form-floating > input:not(:focus):placeholder-shown + label {
+    background: #333;
+}
+
+.form-floating > input + label:after {
+   background: #333 !important;
+}
+
+.form-floating > textarea:not(:focus):placeholder-shown + label {
+    background: #333;
+}
+
+.form-floating > textarea + label:after {
+   background: #333 !important;
+}

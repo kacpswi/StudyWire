@@ -6,7 +6,7 @@
       <div style="position: absolute; bottom: 0;">
         <ul class="list-inline text-center">
           <li class="list-inline-item">
-            <button class="btn btn-primary me-5" routerLink="/schools/{{news().schoolId}}/newses/{{news().id}}">Read News</button>
+            <button class="btn btn-primary me-5" routerLink="/schools/{{news().schoolId}}/news/{{news().id}}" (click)="reload()">Read News</button>
           </li>
           <li class="list-inline-item ms-3 p-1">
             <div>{{news().createdAt | date:'yyyy-MM-dd'}}</div>

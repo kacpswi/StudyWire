@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudyWire.Application.Exceptions
+namespace StudyWire.Domain.Exceptions
 {
     public class NotFoundException : Exception
     {

@@ -1,4 +1,5 @@
-﻿using StudyWire.Application.DTOsModel.User;
+﻿using StudyWire.Application.DTOsModel.News;
+using StudyWire.Application.DTOsModel.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace StudyWire.Application.Services.Interfaces
     {
         public Task<ReturnLoginUserDto> LoginUserAsync(LoginUserDto loginUserDto);
         public Task<ReturnLoginUserDto> RegisterUserAsync(RegisterUserDto registerUserDto);
+        public Task<IEnumerable<ReturnNewsDto>> GetAllUserNewsAsync(int userId);
     }
 }

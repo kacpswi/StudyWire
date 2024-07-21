@@ -255,6 +255,9 @@ namespace StudyWire.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -270,7 +273,7 @@ namespace StudyWire.Infrastructure.Migrations
 
                     b.HasIndex("SchoolId");
 
-                    b.ToTable("Newses");
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("StudyWire.Domain.Entities.School", b =>
@@ -280,6 +283,9 @@ namespace StudyWire.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

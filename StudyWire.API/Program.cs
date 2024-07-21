@@ -1,20 +1,19 @@
 using StudyWire.Infrastructure.Extensions;
 using StudyWire.Application.Extensions;
-using StudyWire.Application.Middlewares;
 using Microsoft.AspNetCore.Identity;
-using StudyWire.Infrastructure;
 using System.Data;
 using StudyWire.Infrastructure.Presistence;
 using Microsoft.EntityFrameworkCore;
 using StudyWire.Domain.Entities;
+using StudyWire.Infrastructure.Seeders;
+using StudyWire.API.Extensions;
+using StudyWire.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddInfrastructureServices(builder.Configuration).AddApplicationServices();
+builder.AddPresentationServices();
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
