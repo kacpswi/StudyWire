@@ -19,8 +19,17 @@ namespace StudyWire.Infrastructure.Extensions
     {
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<StudyWireDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("StudyWire")));
+            if (Environment.GetEnvironmentVariable("DOCKER_ENVIRONMENT") == "Docker")
+            {
+                services.AddDbContext<StudyWireDbContext>(
+                    options => options.UseSqlServer(configuration.GetConnectionString("StudyWireDocker")));
+            }
+            else
+            {
+                services.AddDbContext<StudyWireDbContext>(
+                    options => options.UseSqlServer(configuration.GetConnectionString("StudyWireLocal")));
+            }
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

@@ -2,7 +2,7 @@
     <div class="text-center my-5 col-10">
         <h2>Your News</h2>
     </div>
-    <div *appHasRole="['Teacher']" class="col-2">
+    <div *appHasRole="['Teacher']" class="col-2 text-end">
         <button class="btn btn-success" routerLink="/schools/{{accountService.currentUser()?.schoolId}}/news/new">Create new news</button>
     </div>
 </div>
