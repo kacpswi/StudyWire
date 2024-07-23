@@ -23,13 +23,11 @@ namespace StudyWire.Infrastructure.Extensions
             {
                 services.AddDbContext<StudyWireDbContext>(
                     options => options.UseSqlServer(configuration.GetConnectionString("StudyWireDocker")));
-                Console.WriteLine(configuration.GetConnectionString("StudyWireDocker"));
             }
             else
             {
                 services.AddDbContext<StudyWireDbContext>(
                     options => options.UseSqlServer(configuration.GetConnectionString("StudyWireLocal")));
-                Console.WriteLine(configuration.GetConnectionString("StudyWireLocal"));
             }
 
 
