@@ -7,17 +7,19 @@ EXPOSE 8080
 EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["StudyWire.API/StudyWire.API.csproj", "StudyWire.API/"]
-RUN dotnet restore "./StudyWire.API/StudyWire.API.csproj"
+COPY ["Shared/Shared.csproj", "Shared/"]
+COPY ["StudyWire.Application/StudyWire.Application.csproj", "StudyWire.Application/"]
+COPY ["StudyWire.Domain/StudyWire.Domain.csproj", "StudyWire.Domain/"]
+COPY ["StudyWire.Infrastructure/StudyWire.Infrastructure.csproj", "StudyWire.Infrastructure/"]
+RUN dotnet restore "StudyWire.API/StudyWire.API.csproj"
 COPY . .
 WORKDIR "/src/StudyWire.API"
-RUN dotnet build "./StudyWire.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "StudyWire.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./StudyWire.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "StudyWire.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

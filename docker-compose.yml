@@ -1,0 +1,39 @@
+version: '3.4'
+
+networks:
+  studyWireApp:
+
+volumes:
+    sql-vol:
+
+services:
+  StudyWireDb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: StudyWireDb
+    environment:
+      ACCEPT_EULA: "1"
+      MSSQL_SA_PASSWORD: "Password@1"
+    ports:
+      - "8002:1433"
+    networks:
+      - studyWireApp
+    volumes:
+     - sql-vol:/var/opt/mssql
+
+  studywire.api:
+    container_name: StudyWire
+    image: ${DOCKER_REGISTRY-}studywireapi
+    build:
+      context: .
+      dockerfile: StudyWire.API/Dockerfile
+    ports:
+     - 8081:8081
+     - 8080:8080 
+    depends_on:
+      - StudyWireDb
+    networks:
+      - studyWireApp
+
+
+
+

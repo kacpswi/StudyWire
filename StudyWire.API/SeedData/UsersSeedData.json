@@ -1,0 +1,68 @@
+[
+  {
+    "UserName": "guest",
+    "Name": "guest",
+    "Surename": "guest",
+    "Email": "guest"
+  },
+  {
+    "UserName": "teacherA_1",
+    "Name": "teacherA_1",
+    "Surename": "teacherA_1",
+    "Email": "teacherA_1",
+    "SchoolId": 1
+  },
+  {
+    "UserName": "teacherA_2",
+    "Name": "teacherA_2",
+    "Surename": "teacherA_2",
+    "Email": "teacherA_2",
+    "SchoolId": 1
+  },
+  {
+    "UserName": "teacherB_1",
+    "Name": "teacherB_1",
+    "Surename": "teacherB_1",
+    "Email": "teacherB_1",
+    "SchoolId": 2
+  },
+  {
+    "UserName": "teacherB_2",
+    "Name": "teacherB_2",
+    "Surename": "teacherB_2",
+    "Email": "teacherB_2",
+    "SchoolId": 2
+  },
+  {
+    "UserName": "studentA",
+    "Name": "studentA",
+    "Surename": "studentA",
+    "Email": "studentA",
+    "SchoolId": 1
+  },
+  {
+    "UserName": "studentB",
+    "Name": "studentB",
+    "Surename": "studentB",
+    "Email": "studentB",
+    "SchoolId": 1
+  },
+  {
+    "UserName": "admin",
+    "Name": "admin",
+    "Surename": "admin",
+    "Email": "admin"
+  },
+  {
+    "UserName": "schoolAdmin1",
+    "Name": "school",
+    "Surename": "admin",
+    "Email": "schoolAdmin1"
+  },
+  {
+    "UserName": "schoolAdmin2",
+    "Name": "school",
+    "Surename": "admin",
+    "Email": "schoolAdmin2"
+  }
+]

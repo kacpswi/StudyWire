@@ -1,0 +1,18 @@
+[
+  {
+    "Name": "School A",
+    "Address": {
+      "PhoneNumber": "Phone A",
+      "City": "City A",
+      "Street": "StreetA"
+    }
+  },
+  {
+    "Name": "School B",
+    "Address": {
+      "PhoneNumber": "Phone B",
+      "City": "City B",
+      "Street": "StreetB"
+    }
+  }
+]

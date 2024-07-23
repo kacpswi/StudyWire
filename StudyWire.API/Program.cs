@@ -33,6 +33,15 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+if (Environment.GetEnvironmentVariable("DOCKER_ENVIRONMENT") == "Docker")
+{
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
+
+    app.MapFallbackToController("Index", "Fallback");
+}
+
+
 app.MapControllers();
 
 using var scope = app.Services.CreateScope();
@@ -43,7 +52,9 @@ try
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
     await context.Database.MigrateAsync();
-    await Seeder.SeedUsers(userManager, roleManager, context);
+    await SchoolsSeeder.SeedSchools(context);
+    await UsersSeeder.SeedUsers(userManager, roleManager, context);
+    await NewsSeeder.SeedNews(context);
 }
 catch (Exception ex)
 {
