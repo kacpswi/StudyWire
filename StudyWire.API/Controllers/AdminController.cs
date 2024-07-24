@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudyWire.Application.Extensions;
+using StudyWire.Application.Helpers.Pagination;
 using StudyWire.Application.Services.Interfaces;
 using StudyWire.Domain.Entities;
 
@@ -32,6 +34,23 @@ namespace StudyWire.API.Controllers
         {
             await _adminService.DeleteUserByIdAsync(id);
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("users-with-roles")]
+        public async Task<ActionResult> GetUsersWithRoles([FromQuery] PagedQuery query)
+        {
+            var result = await _adminService.GetUsersWithRolesAsync(query);
+            Response.AddPaginationHeader(result);
+            return Ok(result.Items);
+        }
+
+        [HttpPost]
+        [Route("edit-roles/{userId}")]
+        public async Task<ActionResult> EditRoles([FromRoute] int userId, [FromQuery] string roles)
+        {
+            await _adminService.EditUserRolesAsync(userId, roles);
+            return Ok();
         }
     }
 }
