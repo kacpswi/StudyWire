@@ -45,13 +45,13 @@ export class NewsListComponent implements OnInit {
   resetFilters(){
     this.newsService.resetUserParams();
     this.newsFrom = "userSchool"
-    this.loadNews;
+    this.loadNews();
   }
 
   pageChange(event:any){
     if(this.newsService.userParams().pageNumber !== event.page){
       this.newsService.userParams().pageNumber = event.page;
-      this.loadNews()
+      this.loadNews();
     }
   }
 }

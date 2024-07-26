@@ -23,35 +23,25 @@ namespace StudyWire.Infrastructure.Repositories
             _context = context;
             _userManager = userManager;
         }
-        public async Task<(IEnumerable<object?>, int)> GetAllUsersWithRoleAsync(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection)
+        public async Task<(IEnumerable<AppUser>, int)> GetAllUsersWithRoleAsync(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection)
         {
             var query = GetAllSearchedAndSortedQuery(searchPhrase, sortBy, sortDirection);
 
             var users = await query
+                .Include(u => u.School)
                 .Skip(pageSize * (pageNumber - 1))
                 .Take(pageSize)
                 .Include(n => n.School)
                 .ToListAsync();
 
-            var usersWithRoles = new List<object>();
-
-            foreach (var user in users)
-            {
-                var roles = await _userManager.GetRolesAsync(user);
-                usersWithRoles.Add(
-                    new
-                    {
-                        user.Id,
-                        Name = user.Name,
-                        Surename = user.Surename,
-                        Email = user.Email,
-                        UserRoles = roles
-                    });
-            }
-
             var count = await query.CountAsync();
 
-            return (usersWithRoles, count);
+            return (users, count);
+        }
+
+        public async Task<AppUser?> GetUserWithSchoolAsync(int userId)
+        {
+            return await _context.Users.Include(u => u.School).FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         private IQueryable<AppUser> GetAllSearchedAndSortedQuery(string? searchPhrase, string? sortBy, SortDirection sortDirection)
@@ -66,6 +56,7 @@ namespace StudyWire.Infrastructure.Repositories
                 var columnsSelectors = new Dictionary<string, Expression<Func<AppUser, object>>>
                 {
                     { nameof(AppUser.Name), r => r.Name },
+                    { nameof(AppUser.Surename), r => r.Surename },
                     { nameof(AppUser.SchoolId), r => r.SchoolId },
                 };
 

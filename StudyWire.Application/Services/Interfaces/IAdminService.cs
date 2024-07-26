@@ -1,4 +1,5 @@
-﻿using StudyWire.Application.Helpers.Pagination;
+﻿using StudyWire.Application.DTOsModel.User;
+using StudyWire.Application.Helpers.Pagination;
 using StudyWire.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace StudyWire.Application.Services.Interfaces
     {
         public Task <IEnumerable<AppUser>> GetUsersAsync();
         public Task DeleteUserByIdAsync(int id);
-        public Task<PagedResult<object>> GetUsersWithRolesAsync(PagedQuery query);
-        public Task EditUserRolesAsync(int userId, string roles);
+        public Task<PagedResult<ReturnUserWithRoles>> GetUsersWithRolesAsync(PagedQuery query);
+        public Task<ReturnUserWithRoles> EditUserRolesAsync(int userId, string roles);
     }
 }

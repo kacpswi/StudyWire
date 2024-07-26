@@ -65,9 +65,9 @@ export class AccountService {
   logout(){
     localStorage.removeItem("user");
     this.newsService.newsCache.clear();
-    this.newsService.userNews.set([]);
+    this.newsService.userNews.set(null);
     this.newsService.paginatedResults.set(null);
-    this.newsService.userParams.set(new UserParams(null,null,null));
+    this.newsService.userParams.set(new UserParams("","CreatedAt","DESC"));
     this.newsService.userNewsChanged.set(false);
     this.newsService.newsCacheChanged.set(false);
     this.currentUser.set(null);

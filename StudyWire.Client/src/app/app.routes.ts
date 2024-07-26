@@ -14,6 +14,8 @@ import { schoolAdminGuard } from './_guards/school-admin.guard';
 import { SchoolDetailsComponent } from './schools/school-details/school-details.component';
 import { SchoolNewComponent } from './schools/school-new/school-new.component';
 import { preventNewUnsavedChanges } from './_guards/prevent-new-unsaved-changes.guard';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { adminGuard } from './_guards/admin.guard';
 
 
 export const routes: Routes = [
@@ -30,6 +32,7 @@ export const routes: Routes = [
             {path: 'mySchool/new', component:SchoolNewComponent, canActivate:[schoolAdminGuard]},
             {path: 'schools/:schoolId/news/new', component:NewsNewComponent, canActivate:[teacherGuard], canDeactivate:[preventNewUnsavedChanges]},
             {path: 'schools/:schoolId/news/:newsId', component: NewsDetailComponent},
+            {path: 'admin', component: AdminPanelComponent, canActivate:[adminGuard]},
         ]
     },
     {path: 'not-found', component: NotFoundComponent},

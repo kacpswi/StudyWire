@@ -47,10 +47,10 @@ namespace StudyWire.API.Controllers
 
         [HttpPost]
         [Route("edit-roles/{userId}")]
-        public async Task<ActionResult> EditRoles([FromRoute] int userId, [FromQuery] string roles)
+        public async Task<ActionResult<IList<string>>> EditRoles([FromRoute] int userId, [FromQuery] string roles)
         {
-            await _adminService.EditUserRolesAsync(userId, roles);
-            return Ok();
+            var newRoles = await _adminService.EditUserRolesAsync(userId, roles);
+            return Ok(newRoles);
         }
     }
 }

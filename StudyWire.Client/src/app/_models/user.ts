@@ -4,4 +4,7 @@ export interface User{
     surename: string;
     token: string;
     schoolId: number;
+    email: string;
+    userRoles: string[];
+    schoolName: string;
 }

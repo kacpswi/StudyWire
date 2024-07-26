@@ -10,6 +10,7 @@ namespace StudyWire.Domain.Interfaces
 {
     public interface IUserRepository
     {
-        Task<(IEnumerable<object?>, int)> GetAllUsersWithRoleAsync(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection);
+        Task<AppUser?> GetUserWithSchoolAsync(int userId);
+        Task<(IEnumerable<AppUser>, int)> GetAllUsersWithRoleAsync(string? searchPhrase, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection);
     }
 }
