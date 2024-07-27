@@ -115,7 +115,7 @@
                         <td style="width: 10%;">{{user.userRoles}}</td>
                         <td style="width: 10%;"><button class="btn btn-primary">Edit school</button></td>
                         <td style="width: 10%;"><button class="btn btn-info" (click)="openRolesModal(user)">Edit roles</button></td>
-                        <td style="width: 10%;"><button class="btn btn-danger">Delete user</button></td>
+                        <td style="width: 10%;"><button class="btn btn-danger" (click)="openDeleteModal(user)">Delete user</button></td>
                     </tr>
                 }
             </tbody>

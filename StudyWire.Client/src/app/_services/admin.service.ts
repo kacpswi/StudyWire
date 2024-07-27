@@ -37,6 +37,10 @@ export class AdminService {
     this.userParams.set(new UserParams("","Name","ASC"))
   }
 
+  deleteUser(userId: string){
+    return this.http.delete(this.baseUrl + 'admin/delete-user/' + userId)
+  }
+
   private setPaginationHeaders(){
     let params = new HttpParams();
 

@@ -6,6 +6,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { RolesModalComponent } from '../../modals/roles-modal/roles-modal.component';
+import { DeleteModalComponent } from '../../modals/delete-modal/delete-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-management',
@@ -15,11 +17,13 @@ import { RolesModalComponent } from '../../modals/roles-modal/roles-modal.compon
   styleUrl: './user-management.component.css'
 })
 export class UserManagementComponent implements OnInit{
+  private toastr = inject(ToastrService);
   private modalService = inject(BsModalService);
   adminService = inject(AdminService);
   sortByList = [{value:'Name', display: 'Name'},{value:'Surename', display:'Surename'},{value:'SchoolId',display:'School'}]
   itemsPerPageList = ['12','16','20']
-  bsModalRef: BsModalRef<RolesModalComponent> = new BsModalRef<RolesModalComponent>();
+  bsRolesModalRef: BsModalRef<RolesModalComponent> = new BsModalRef<RolesModalComponent>();
+  bsDeleteModalRef: BsModalRef<DeleteModalComponent> = new BsModalRef<DeleteModalComponent>();
 
   ngOnInit(): void {
     if (!this.adminService.paginatedResults()){
@@ -39,17 +43,37 @@ export class UserManagementComponent implements OnInit{
         rolesUpdated: false
       }
     }
-    this.bsModalRef = this.modalService.show(RolesModalComponent, initialState);
-    this.bsModalRef.onHide?.subscribe({
+    this.bsRolesModalRef = this.modalService.show(RolesModalComponent, initialState);
+    this.bsRolesModalRef.onHide?.subscribe({
       next: () => {
-        if (this.bsModalRef.content && this.bsModalRef.content.rolesUpdated){
-          const selectedRoles = this.bsModalRef.content.selectedRoles;
+        if (this.bsRolesModalRef.content && this.bsRolesModalRef.content.rolesUpdated){
+          const selectedRoles = this.bsRolesModalRef.content.selectedRoles;
           this.adminService.updateUserRoles(user.id.toString(), selectedRoles).subscribe({
             next: response => {
               user.userRoles = response.userRoles;
               user.schoolName = response.schoolName;
             }
           })
+        }
+      }
+    })
+  }
+
+  openDeleteModal(user: User){
+    const inisialState: ModalOptions =
+    {
+      class: 'modal-mg',
+      initialState: {
+        deleteItem: false,
+        itemNameToDelete: "User"
+      }
+    }
+    this.bsDeleteModalRef = this.modalService.show(DeleteModalComponent, inisialState);
+    this.bsDeleteModalRef.onHide?.subscribe({
+      next: () => {
+        if(this.bsDeleteModalRef.content && this.bsDeleteModalRef.content.deleteItem)
+        {
+          this.deleteUser(user)
         }
       }
     })
@@ -69,5 +93,18 @@ export class UserManagementComponent implements OnInit{
       this.adminService.userParams().pageNumber = event.page;
       this.getUsersWithRoles();
     }
+  }
+
+  deleteUser(user: User){
+    this.adminService.deleteUser(user.id.toString()).subscribe({
+      next: _ =>{
+        this.toastr.success('User Deleted')
+        const index = this.adminService.paginatedResults()?.items!.findIndex(n => n.id == user.id);
+        if (index){
+          this.adminService.paginatedResults()?.items!.splice(index,1);
+        }
+      },
+      error: _ => this.toastr.error('User could not be deleted')
+    })
   }
 }

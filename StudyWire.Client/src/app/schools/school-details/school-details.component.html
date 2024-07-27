@@ -1,7 +1,12 @@
-@if(accountService.currentUser()?.schoolId==null)
+@if(!this.schoolService.userSchool())
 {
     <div class="m-auto mt-5 text-center">
         <h2>First you have to create school to manage</h2>
         <button class="btn btn-success" routerLink="/mySchool/new">Create school</button>
+    </div>
+}
+@else {
+    <div class="m-auto mt-5 text-center">
+        <h1>{{schoolService.userSchool()?.name}}</h1>
     </div>
 }
