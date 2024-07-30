@@ -6,6 +6,7 @@ using StudyWire.Application.Services.Interfaces;
 
 namespace StudyWire.API.Controllers
 {
+    [ApiController]
     [Route("/api/schools")]
     [Authorize]
     public class SchoolController : ControllerBase
@@ -40,6 +41,7 @@ namespace StudyWire.API.Controllers
         {
             int userId = User.GetUserId();
             var result = await _schoolService.CreateSchoolAsync(schoolDto, userId);
+            Response.ExposeLocationHeader();
             return Created($"api/schools/{result}", null);
         }
 

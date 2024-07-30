@@ -41,7 +41,7 @@ export class NewsEditComponent implements OnInit{
       return;
     }
     else{
-      this.newsService.getNews(user!.schoolId, this.newsId!).subscribe({
+      this.newsService.getNews(user!.schoolId!, this.newsId!).subscribe({
         next: news => {
           this.news = news
         },
@@ -55,7 +55,7 @@ export class NewsEditComponent implements OnInit{
   edit(){
     if (this.newsId)
     {
-      this.newsService.updateNews(this.form?.value, this.accountService.currentUser()!.schoolId, this.newsId!).subscribe({
+      this.newsService.updateNews(this.form?.value, this.accountService.currentUser()!.schoolId!, this.newsId!).subscribe({
         next: _ =>{
           this.toastr.success("News updated.")
           this.form?.reset(this.news);

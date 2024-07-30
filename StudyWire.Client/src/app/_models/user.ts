@@ -3,7 +3,7 @@ export interface User{
     name: string;
     surename: string;
     token: string;
-    schoolId: number;
+    schoolId: number|null;
     email: string;
     userRoles: string[];
     schoolName: string;

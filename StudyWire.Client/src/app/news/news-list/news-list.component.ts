@@ -35,7 +35,7 @@ export class NewsListComponent implements OnInit {
       this.newsService.getAllNews();
     }
     else if(this.newsFrom == "userSchool"){
-      this.newsService.getNewsForSchool(this.accountService.currentUser()!.schoolId);
+      this.newsService.getNewsForSchool(this.accountService.currentUser()!.schoolId!);
     }
     else if(this.newsFrom == "allSchools"){
       this.newsService.getAllNews();

@@ -16,15 +16,10 @@ export class SchoolDetailsComponent implements OnInit{
   schoolService = inject(SchoolService);
   
   ngOnInit(): void {
-    if (this.accountService.currentUser()?.schoolId==null || !this.schoolService.userSchool())
+    if (this.accountService.currentUser()?.schoolId==null || this.schoolService.userSchool())
       {
-        console.log('in if')
-        console.log(this.accountService.currentUser()?.schoolId)
-        console.log(this.schoolService.userSchool())
         return;
       } 
-      
-      console.log('after if')
     this.getSchool(this.accountService.currentUser()?.schoolId!);
   }
 

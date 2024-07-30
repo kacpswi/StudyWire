@@ -44,15 +44,23 @@ export class SchoolNewComponent implements OnInit{
     this.schoolService.upload(this.newSchoolForm.value).subscribe({
       next: response => {
         this.toastr.success("School Created");
-        this.router.navigateByUrl("/mySchool");
+        
         // api/schools/id
         const location = response.headers.get('Location');
         const idMatch = location!.match(/api\/schools\/(\d+)/);
         const schoolId = idMatch ? parseInt(idMatch[1], 10) : null;
-
-        console.log(schoolId);
+        let user = this.accountService.currentUser();
+        if (user) user.schoolId = schoolId;
+        this.accountService.currentUser.set(user);
+        this.schoolService.userSchool.set(this.newSchoolForm.value);
+        localStorage.removeItem("user");
+        localStorage.setItem("user", JSON.stringify(user));
+        this.router.navigateByUrl("/mySchool");
       },
-      error: _ => this.toastr.error("School could not be created")
+      error: error => {
+        this.toastr.error("School could not be created");
+        this.validationErrors = error;
+      }
     })
   }
 }
