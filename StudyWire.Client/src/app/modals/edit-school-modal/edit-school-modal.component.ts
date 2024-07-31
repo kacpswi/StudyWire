@@ -13,7 +13,7 @@ export class EditSchoolModalComponent implements OnInit{
   ngOnInit(): void {
     console.log
   }
-  schoolId : number = 0;
+  schoolName : string = '';
   bsModalRef = inject(BsModalRef);
   title = '';
   availableSchools: School[] = [];
@@ -45,7 +45,12 @@ export class EditSchoolModalComponent implements OnInit{
       console.log(this.schoolUpdated)
       this.bsModalRef.hide();
     }
-    else {
+    else if (this.userSchool && this.valueSelected === -1){
+      this.schoolUpdated = false;
+      console.log(this.schoolUpdated)
+      this.bsModalRef.hide();
+    }
+    else if (this.userSchool && this.valueSelected !== -1){
       this.schoolUpdated = true;
       console.log(this.schoolUpdated)
       this.bsModalRef.hide();

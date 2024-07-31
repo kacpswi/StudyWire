@@ -25,6 +25,6 @@ export class SchoolDetailsComponent implements OnInit{
 
   getSchool(schoolId: number)
   {
-    this.schoolService.getSchoolById(schoolId.toString());
+    this.schoolService.getSchoolById(schoolId.toString())
   }
 }

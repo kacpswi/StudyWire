@@ -95,7 +95,7 @@ export class UserManagementComponent implements OnInit{
       class: 'modal-mg',
       initialState:{
         title: 'Schools',
-        schoolId: user.schoolId,
+        schoolName: user.schoolName,
         userId: user.id,
         userSchool:user.schoolId,
         availableSchools: this.schoolService.schools(),

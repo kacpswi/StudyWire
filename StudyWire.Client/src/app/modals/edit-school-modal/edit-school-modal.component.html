@@ -11,7 +11,7 @@
                 type="radio"
                 class="form-check-input"
                 name="schoolForm"
-                [checked]="school.id == schoolId"
+                [checked]="school.name == schoolName"
                 (change)="updateChecked(school.id)"
             >
             <label>{{school.name}}</label>
