@@ -47,7 +47,7 @@ namespace StudyWire.Infrastructure.Seeders
                 {
                     await userManager.CreateAsync(user, "Pa$$w0rd");
 
-                    if(user.Name.Contains("guset")) await userManager.AddToRolesAsync(user, new[] { "Guest" });
+                    if(user.Name.Contains("guest")) await userManager.AddToRolesAsync(user, new[] { "Guest" });
                     else if(user.Name.Contains("teacher")) await userManager.AddToRolesAsync(user, new[] { "Teacher" });
                     else if (user.Name.Contains("student")) await userManager.AddToRolesAsync(user, new[] { "Student" });
                     else if (user.Name.Contains("school")) await userManager.AddToRolesAsync(user, new[] { "School-Admin" });

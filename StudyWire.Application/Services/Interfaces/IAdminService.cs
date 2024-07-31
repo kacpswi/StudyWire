@@ -15,5 +15,6 @@ namespace StudyWire.Application.Services.Interfaces
         public Task DeleteUserByIdAsync(int id);
         public Task<PagedResult<ReturnUserWithRoles>> GetUsersWithRolesAsync(PagedQuery query);
         public Task<ReturnUserWithRoles> EditUserRolesAsync(int userId, string roles);
+        public Task<string> EditUserSchoolAsync(int userId, string schoolId);
     }
 }

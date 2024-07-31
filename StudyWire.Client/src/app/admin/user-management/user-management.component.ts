@@ -8,6 +8,10 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { RolesModalComponent } from '../../modals/roles-modal/roles-modal.component';
 import { DeleteModalComponent } from '../../modals/delete-modal/delete-modal.component';
 import { ToastrService } from 'ngx-toastr';
+import { systemRoles } from '../../_models/systemRoles';
+import { EditSchoolModalComponent } from '../../modals/edit-school-modal/edit-school-modal.component';
+import { SchoolService } from '../../_services/school.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-user-management',
@@ -19,11 +23,14 @@ import { ToastrService } from 'ngx-toastr';
 export class UserManagementComponent implements OnInit{
   private toastr = inject(ToastrService);
   private modalService = inject(BsModalService);
+  private schoolService = inject(SchoolService);
   adminService = inject(AdminService);
   sortByList = [{value:'Name', display: 'Name'},{value:'Surename', display:'Surename'},{value:'SchoolId',display:'School'}]
   itemsPerPageList = ['12','16','20']
   bsRolesModalRef: BsModalRef<RolesModalComponent> = new BsModalRef<RolesModalComponent>();
   bsDeleteModalRef: BsModalRef<DeleteModalComponent> = new BsModalRef<DeleteModalComponent>();
+  bsEditSchoolModalRef: BsModalRef<EditSchoolModalComponent> = new BsModalRef<EditSchoolModalComponent>();
+  roles = new systemRoles;
 
   ngOnInit(): void {
     if (!this.adminService.paginatedResults()){
@@ -33,12 +40,13 @@ export class UserManagementComponent implements OnInit{
 
   openRolesModal(user: User){
     const initialState: ModalOptions ={
-      class: 'modal-lg',
+      class: 'modal-mg',
       initialState:{
         title: 'User roles',
+        name: user.name,
         userId: user.id,
         selectedRoles:[...user.userRoles],
-        availableRoles: ['Admin', 'School-Admin', 'Teacher', 'Student', 'Guest'],
+        availableRoles: this.roles.avaliableRoles,
         users: this.adminService.paginatedResults()?.items,
         rolesUpdated: false
       }
@@ -74,6 +82,37 @@ export class UserManagementComponent implements OnInit{
         if(this.bsDeleteModalRef.content && this.bsDeleteModalRef.content.deleteItem)
         {
           this.deleteUser(user)
+        }
+      }
+    })
+  }
+
+  async openEditSchoolModal(user: User){
+    if (!this.schoolService.schools()) {
+      await lastValueFrom(this.schoolService.getAllSchools());
+    }
+    const initialState: ModalOptions ={
+      class: 'modal-mg',
+      initialState:{
+        title: 'Schools',
+        schoolId: user.schoolId,
+        userId: user.id,
+        userSchool:user.schoolId,
+        availableSchools: this.schoolService.schools(),
+        users: this.adminService.paginatedResults()?.items,
+        schoolUpdated: false
+      }
+    }
+    this.bsEditSchoolModalRef = this.modalService.show(EditSchoolModalComponent, initialState);
+    this.bsEditSchoolModalRef.onHide?.subscribe({
+      next: () => {
+        if (this.bsEditSchoolModalRef.content && this.bsEditSchoolModalRef.content.schoolUpdated){
+          const selectedSchool = this.bsEditSchoolModalRef.content.valueSelected;
+          this.adminService.updateUserSchool(user.id.toString(), selectedSchool.toString()).subscribe({
+            next: response => {
+              user.schoolName = response.name;
+            }
+          })
         }
       }
     })

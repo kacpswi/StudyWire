@@ -39,6 +39,18 @@ namespace StudyWire.Infrastructure.Repositories
             return await _context.Schools.Include(s => s.News).FirstOrDefaultAsync(s => s.Id == schoolId);
         }
 
+        public async Task<School?> GetSchoolByNameAsync(string schoolName)
+        {
+            return await _context.Schools.FirstOrDefaultAsync(s => s.Name == schoolName);
+        }
+
+        public async Task<IEnumerable<AppUser>?> GetSchoolMembersAsync(int schoolId)
+        {
+            return await _context.Schools.Include(s => s.Members).Where(s => s.Id == schoolId)
+                .SelectMany(s => s.Members)
+                .ToListAsync();
+        }
+
         public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() > 0;

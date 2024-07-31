@@ -4,6 +4,7 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 import { PaginatedResult } from '../_models/pagination';
+import { School } from '../_models/school';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,10 @@ export class AdminService {
 
   updateUserRoles(userId: string, roles: string[]){
     return this.http.post<User>(this.baseUrl + 'admin/edit-roles/' + userId + '?roles=' + roles, {})
+  }
+
+  updateUserSchool(userId: string, schoolName: string){
+    return this.http.post<School>(this.baseUrl + 'admin/edit-school/' + userId + '?schoolId=' + schoolName, {})
   }
 
   resetUserParams(){

@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { School } from '../_models/school';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class SchoolService {
   private http = inject(HttpClient);
   baseUrl = environment.apiUrl;
   userSchool = signal<School | null>(null);
+  schools = signal<School[] | null>(null);
 
 
   upload(model: any){
@@ -24,5 +26,16 @@ export class SchoolService {
         this.userSchool.set(response);
       }
     })
+  }
+
+  getAllSchools(){
+    return this.http.get<School[]>(this.baseUrl + 'schools').pipe(
+      map(schools => {
+        if (schools) {
+          this.schools.set(schools);
+        }
+        return schools;
+      })
+    )
   }
 }

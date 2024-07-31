@@ -9,6 +9,7 @@ using StudyWire.Domain.Entities;
 using StudyWire.Domain.Exceptions;
 using StudyWire.Domain.Interfaces;
 using StudyWire.Domain.Models;
+using System.Data;
 using System.Linq.Expressions;
 
 namespace StudyWire.Application.Services
@@ -18,12 +19,15 @@ namespace StudyWire.Application.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly ISchoolRepository _schoolRepository;
 
-        public AdminService(UserManager<AppUser> userManager, IUserRepository userRepository, IMapper mapper)
+        public AdminService(UserManager<AppUser> userManager, IUserRepository userRepository,
+                IMapper mapper, ISchoolRepository schoolRepository)
         {
             _userManager = userManager;
             _userRepository = userRepository;
             _mapper = mapper;
+            _schoolRepository = schoolRepository;
         }
 
         public async Task DeleteUserByIdAsync(int id)
@@ -140,6 +144,36 @@ namespace StudyWire.Application.Services
             };
 
             return dto;
+        }
+
+        public async Task<string> EditUserSchoolAsync(int userId, string schoolId)
+        {
+            if (string.IsNullOrEmpty(schoolId))
+            {
+                throw new BadRequestException("You must select one school");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null) throw new NotFoundException("User not found");
+
+            if (!int.TryParse(schoolId, out int id))
+            {
+                throw new BadRequestException("Invalid school id");
+            }
+            var school = await _schoolRepository.GetSchoolByIdAsync(id);
+
+            if (school == null) throw new NotFoundException("School not found");
+
+            user.School = school;
+            user.SchoolId = school.Id;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded) throw new BadRequestException("Failed to change school");
+
+            return school.Name;
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudyWire.Application.DTOsModel.User;
 using StudyWire.Application.Extensions;
 using StudyWire.Application.Helpers.Pagination;
 using StudyWire.Application.Services.Interfaces;
@@ -47,10 +48,18 @@ namespace StudyWire.API.Controllers
 
         [HttpPost]
         [Route("edit-roles/{userId}")]
-        public async Task<ActionResult<IList<string>>> EditRoles([FromRoute] int userId, [FromQuery] string roles)
+        public async Task<ActionResult<ReturnUserWithRoles>> EditRoles([FromRoute] int userId, [FromQuery] string roles)
         {
             var newRoles = await _adminService.EditUserRolesAsync(userId, roles);
             return Ok(newRoles);
+        }
+
+        [HttpPost]
+        [Route("edit-school/{userId}")]
+        public async Task<ActionResult<ReturnUserDto>> EditSchool([FromRoute] int userId, [FromQuery] string schoolId)
+        {
+            var newSchool = await _adminService.EditUserSchoolAsync(userId, schoolId);
+            return Ok(new { Name = newSchool });
         }
     }
 }

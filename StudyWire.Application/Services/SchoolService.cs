@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using StudyWire.Application.DTOsModel.School;
+using StudyWire.Application.DTOsModel.User;
 using StudyWire.Application.Services.Interfaces;
 using StudyWire.Domain.Entities;
 using StudyWire.Domain.Exceptions;
@@ -111,6 +112,17 @@ namespace StudyWire.Application.Services
                 throw new NotFoundException("School not found");
             }
             
+        }
+
+        public async Task<IEnumerable<ReturnUserDto>> GetSchoolMembersAsync(int schoolId)
+        {
+            var members = await _schoolRepository.GetSchoolMembersAsync(schoolId);
+
+            if (members == null) throw new NotFoundException("Members not found!");
+
+            var membersDto = _mapper.Map<IEnumerable<ReturnUserDto>>(members);
+
+            return membersDto;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyWire.Application.DTOsModel.School;
+using StudyWire.Application.DTOsModel.User;
 using StudyWire.Application.Extensions;
 using StudyWire.Application.Services.Interfaces;
 
@@ -64,6 +65,16 @@ namespace StudyWire.API.Controllers
             await _schoolService.DeleteSchoolAsync(userId, schoolId);
 
             return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{schoolId}/members")]
+        public async Task<ActionResult<IEnumerable<ReturnUserDto>>> GetSchoolMembers([FromRoute] int schoolId)
+        {
+            var members = await _schoolService.GetSchoolMembersAsync(schoolId);
+
+            return Ok(members);
         }
     }
 }
