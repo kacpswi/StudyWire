@@ -10,10 +10,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class DeleteModalComponent {
   bsModalRef = inject(BsModalRef);
-  deleteNews = false;
+  deleteItem = false;
+  itemNameToDelete = ""
 
   onDeleteClick(){
-    this.deleteNews = true;
+    this.deleteItem = true;
     this.bsModalRef.hide();
   }
 }

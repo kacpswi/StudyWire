@@ -1,1 +1,45 @@
-<p>To Do!</p>
+<div class="form-singin m-auto mt-5" style="width: 700px;">
+    <form [formGroup]="newSchoolForm" (ngSubmit)="create()">
+
+        <h1 class="h2 mb-3">School Name</h1>
+        <app-text-input
+            [formControl]="$any(newSchoolForm.controls['name'])"
+            [label]="'School Name'"
+        ></app-text-input>
+
+        <h1 class="h3 my-3">Phone Number</h1>
+        <app-text-input
+            [formControl]="$any(newSchoolForm.controls['phoneNumber'])"
+            [label]="'Phone Number'"
+        ></app-text-input>
+
+        <h1 class="h3 my-3">Address</h1>
+        <app-text-input
+            [formControl]="$any(newSchoolForm.controls['postalCode'])"
+            [label]="'Postal Code'"
+        ></app-text-input>
+
+        <app-text-input
+            [formControl]="$any(newSchoolForm.controls['city'])"
+            [label]="'City'"
+        ></app-text-input>
+
+        <app-text-input
+            [formControl]="$any(newSchoolForm.controls['street'])"
+            [label]="'Street'"
+        ></app-text-input>
+
+        @if (validationErrors.length > 0 ) {
+            <div class="alert alert-danger pb-1">
+              <ul>
+                @for (error of validationErrors; track $index) {
+                  <li>{{error}}</li>
+                }
+              </ul>
+            </div>
+          }
+
+        <button class="btn btn-primary py-2 mt-2 mb-5" style="width: 145px;" type="submit" [disabled]="!newSchoolForm.valid">Create</button>
+        <button class="btn btn-danger py-2 mt-2 mb-5 ms-2" style="width: 145px;" type="button" routerLink="/mySchool">Cancel</button>
+    </form>
+</div>

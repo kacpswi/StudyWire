@@ -6,6 +6,8 @@ import { environment } from '../../environments/environment';
 import { News } from '../_models/news';
 import { NewsService } from './news.service';
 import { UserParams } from '../_models/userParams';
+import { SchoolService } from './school.service';
+import { AdminService } from './admin.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,8 @@ import { UserParams } from '../_models/userParams';
 export class AccountService {
   private http = inject(HttpClient);
   private newsService = inject(NewsService);
+  private schoolServcie = inject(SchoolService);
+  private adminServcie = inject(AdminService);
   baseUrl = environment.apiUrl;
   currentUser = signal<User | null>(null);
   
@@ -65,12 +69,17 @@ export class AccountService {
   logout(){
     localStorage.removeItem("user");
     this.newsService.newsCache.clear();
-    this.newsService.userNews.set([]);
+    this.newsService.userNews.set(null);
     this.newsService.paginatedResults.set(null);
-    this.newsService.userParams.set(new UserParams(null,null,null));
+    this.newsService.userParams.set(new UserParams("","CreatedAt","DESC"));
     this.newsService.userNewsChanged.set(false);
     this.newsService.newsCacheChanged.set(false);
     this.currentUser.set(null);
+    this.schoolServcie.userSchool.set(null);
+    this.schoolServcie.schools.set(null);
+    this.adminServcie.userParams.set((new UserParams("","Name","ASC")));
+    this.adminServcie.paginatedResults.set(null);
+    this.adminServcie.userCache.clear();
   }
 
 

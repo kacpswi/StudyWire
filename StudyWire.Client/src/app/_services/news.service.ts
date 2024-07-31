@@ -16,14 +16,14 @@ export class NewsService {
   baseUrl = environment.apiUrl;
   paginatedResults = signal<PaginatedResult<News[]> | null>(null);
   newsCache = new Map();
-  userParams = signal<UserParams>(new UserParams(null,null,null)); 
+  userParams = signal<UserParams>(new UserParams("","CreatedAt","DESC")); 
   router = inject(Router);
   userNewsChanged = signal<boolean>(false);
   userNews = signal<News[] | null>(null);
   newsCacheChanged = signal<boolean>(false);
 
   resetUserParams(){
-    this.userParams.set(new UserParams(null,null,null))
+    this.userParams.set(new UserParams("","CreatedAt","DESC"))
   }
 
   getAllNews(){

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace StudyWire.Domain.Entities
         public string Surename { get; set; }
         public Address Address { get; set; }
         public int? SchoolId { get; set; }
+        [JsonIgnore]
         public School? School { get; set;}
     }
 }

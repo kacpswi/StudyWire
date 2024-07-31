@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyWire.Application.DTOsModel.School;
+using StudyWire.Application.DTOsModel.User;
 using StudyWire.Application.Extensions;
 using StudyWire.Application.Services.Interfaces;
 
 namespace StudyWire.API.Controllers
 {
+    [ApiController]
     [Route("/api/schools")]
     [Authorize]
     public class SchoolController : ControllerBase
@@ -19,7 +21,7 @@ namespace StudyWire.API.Controllers
 
         [HttpGet]
         [Route("{schoolId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "School-Admin")]
         public async Task<ActionResult<ReturnSchoolDto>> GetSchoolById([FromRoute] int schoolId)
         {
             var result = await _schoolService.GetSchoolByIdAsync(schoolId);
@@ -40,6 +42,7 @@ namespace StudyWire.API.Controllers
         {
             int userId = User.GetUserId();
             var result = await _schoolService.CreateSchoolAsync(schoolDto, userId);
+            Response.ExposeLocationHeader();
             return Created($"api/schools/{result}", null);
         }
 
@@ -62,6 +65,16 @@ namespace StudyWire.API.Controllers
             await _schoolService.DeleteSchoolAsync(userId, schoolId);
 
             return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{schoolId}/members")]
+        public async Task<ActionResult<IEnumerable<ReturnUserDto>>> GetSchoolMembers([FromRoute] int schoolId)
+        {
+            var members = await _schoolService.GetSchoolMembersAsync(schoolId);
+
+            return Ok(members);
         }
     }
 }

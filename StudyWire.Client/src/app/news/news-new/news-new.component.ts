@@ -52,7 +52,7 @@ export class NewsNewComponent implements OnInit, AfterViewInit {
   create(){
     if (this.accountService.currentUser()?.schoolId != null)
     {
-      this.newsService.upload(this.newNewsForm.value, this.accountService.currentUser()!.schoolId).subscribe({
+      this.newsService.upload(this.newNewsForm.value, this.accountService.currentUser()!.schoolId!).subscribe({
         next: (response) =>{
           this.toastr.success('Created news');
           this.newsService.userNews()?.push(response.body as News)

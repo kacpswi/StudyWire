@@ -18,8 +18,8 @@ namespace StudyWire.Application.DTOsModel.School.Validators
             RuleFor(s => s.PhoneNumber)
                 .NotEmpty()
                 .WithMessage("Phone number field is required")
-                .Matches("""^[0-9]*$""")
-                .WithMessage("Phone number can have only numbers");
+                .Matches("""(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})""")
+                .WithMessage("Phone number field is not in valid format");
                 
 
             RuleFor(s => s.Street)

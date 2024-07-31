@@ -27,15 +27,16 @@ export class UserNewsCardComponent {
   openDeleteModal(){
     const inisialState: ModalOptions =
     {
-      class: 'modal-mg',
+      class: 'modal-lg',
       initialState: {
-        deleteNews: false
+        deleteItem: false,
+        itemNameToDelete: "News"
       }
     }
     this.bsModalRef = this.modalService.show(DeleteModalComponent, inisialState);
     this.bsModalRef.onHide?.subscribe({
       next: () => {
-        if(this.bsModalRef.content && this.bsModalRef.content.deleteNews)
+        if(this.bsModalRef.content && this.bsModalRef.content.deleteItem)
         {
           this.deleteNews()
         }

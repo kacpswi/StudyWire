@@ -13,6 +13,8 @@ namespace StudyWire.Domain.Interfaces
         public Task<IEnumerable<School?>> GetAllSchoolsAsync();
         public Task AddSchoolAsync(School school);
         public void DeleteSchool(School school);
+        public Task<School?> GetSchoolByNameAsync(string schoolName);
+        public Task<IEnumerable<AppUser>?> GetSchoolMembersAsync(int schoolId);
         public Task<bool> SaveAsync();
     }
 }
