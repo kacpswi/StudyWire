@@ -14,5 +14,6 @@ namespace StudyWire.Domain.Entities
         public Address Address { get; set; }
         public List<AppUser> Members { get; set; }
         public List<News> News { get; set; }
+        public List<Group> Groups { get; set; }
     }
 }

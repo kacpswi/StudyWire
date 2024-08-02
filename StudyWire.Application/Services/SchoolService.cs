@@ -124,5 +124,34 @@ namespace StudyWire.Application.Services
 
             return membersDto;
         }
+
+
+        public async Task<IEnumerable<ReturnUserDto>> GetTeachersInSchoolAsync(int schoolId)
+        {
+            var teachers = await GetMembersWithRoleInSchoolAsync(schoolId, "Teacher");  
+            return _mapper.Map<IEnumerable<ReturnUserDto>>(teachers);
+        }
+
+        public async Task<IEnumerable<ReturnUserDto>> GetStudentsInSchoolAsync(int schoolId)
+        {
+            var students =  await GetMembersWithRoleInSchoolAsync(schoolId, "Student");
+            return _mapper.Map<IEnumerable<ReturnUserDto>>(students);
+        }
+
+        private async Task<IEnumerable<AppUser>> GetMembersWithRoleInSchoolAsync(int schoolId, string role)
+        {
+            var users = await _schoolRepository.GetSchoolMembersAsync(schoolId);
+            var members = new List<AppUser>();
+
+            foreach (var user in users)
+            {
+                if (await _userManager.IsInRoleAsync(user, role))
+                {
+                    members.Add(user);
+                }
+            }
+
+            return members;
+        }
     }
 }

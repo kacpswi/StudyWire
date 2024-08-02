@@ -14,6 +14,8 @@ namespace StudyWire.Domain.Entities
         public string Name { get; set; }
         public string Surename { get; set; }
         public Address Address { get; set; }
+        public int? GroupId { get; set; }
+        public Group? Group { get; set; }
         public int? SchoolId { get; set; }
         [JsonIgnore]
         public School? School { get; set;}

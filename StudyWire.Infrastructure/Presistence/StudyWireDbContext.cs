@@ -17,6 +17,7 @@ namespace StudyWire.Infrastructure.Presistence
     {
         public DbSet<School> Schools { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
         public StudyWireDbContext(DbContextOptions<StudyWireDbContext> options) : base(options)
         {
@@ -41,6 +42,16 @@ namespace StudyWire.Infrastructure.Presistence
                 .HasMany(s => s.News)
                 .WithOne(n => n.School)
                 .HasForeignKey(n => n.SchoolId);
+
+            modelBuilder.Entity<School>()
+                .HasMany(s => s.Groups)
+                .WithOne(g => g.School)
+                .HasForeignKey(g => g.SchoolId);
+
+            modelBuilder.Entity<Group>()
+                .HasMany(g => g.Students)
+                .WithOne(s => s.Group)
+                .HasForeignKey(s => s.GroupId);
         }
     }
 }

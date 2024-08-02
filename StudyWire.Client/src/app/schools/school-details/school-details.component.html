@@ -9,4 +9,15 @@
     <div class="m-auto mt-5 text-center">
         <h1>{{schoolService.userSchool()?.name}}</h1>
     </div>
+
+    <div class="tab-panel mt-3">
+        <tabset>
+            <tab heading="Members management" *appHasRole="['School-Admin']">
+                <div class="container">
+                    <app-member-management></app-member-management>
+                </div>   
+            </tab>
+        </tabset>
+    
+    </div>
 }

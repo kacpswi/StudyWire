@@ -67,7 +67,6 @@ namespace StudyWire.API.Controllers
             return NoContent();
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [Route("{schoolId}/members")]
         public async Task<ActionResult<IEnumerable<ReturnUserDto>>> GetSchoolMembers([FromRoute] int schoolId)
@@ -75,6 +74,27 @@ namespace StudyWire.API.Controllers
             var members = await _schoolService.GetSchoolMembersAsync(schoolId);
 
             return Ok(members);
+        }
+
+        
+        [HttpGet]
+        [Route("{schoolId}/teachers")]
+        [Authorize(Roles = "School-Admin, Admin")]
+        public async Task<ActionResult<IEnumerable<ReturnUserDto>>> GetTeachersInSchool([FromRoute] int schoolId)
+        {
+            var teachers = await _schoolService.GetTeachersInSchoolAsync(schoolId);
+
+            return Ok(teachers);
+        }
+
+        [HttpGet]
+        [Route("{schoolId}/students")]
+        [Authorize(Roles = "School-Admin, Admin")]
+        public async Task<ActionResult<IEnumerable<ReturnUserDto>>> GetStudentsInSchool([FromRoute] int schoolId)
+        {
+            var strudents = await _schoolService.GetStudentsInSchoolAsync(schoolId);
+
+            return Ok(strudents);
         }
     }
 }
