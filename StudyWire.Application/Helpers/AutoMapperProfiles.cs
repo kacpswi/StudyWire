@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using StudyWire.Application.DTOsModel.Group;
 using StudyWire.Application.DTOsModel.News;
 using StudyWire.Application.DTOsModel.School;
 using StudyWire.Application.DTOsModel.User;
@@ -28,6 +29,9 @@ namespace StudyWire.Application.Helpers
                 { City = dto.City, PostalCode = dto.PostalCode, Street = dto.Street, PhoneNumber = dto.PhoneNumber }));
 
             CreateMap<AppUser, ReturnUserDto>();
+
+            CreateMap<PostGroupDto, Group>();
+            CreateMap<Group, ReturnGroupDto>();
         }
     }
 }

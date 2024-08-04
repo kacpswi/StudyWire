@@ -56,6 +56,8 @@ namespace StudyWire.Infrastructure.Extensions
             services.AddScoped<ISchoolRepository, SchoolRepository>();
             services.AddScoped<ISchoolService, SchoolService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IGroupService, GroupService>();
             services.AddCors();
         }
     }
