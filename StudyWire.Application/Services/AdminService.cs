@@ -11,6 +11,7 @@ using StudyWire.Domain.Interfaces;
 using StudyWire.Domain.Models;
 using System.Data;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace StudyWire.Application.Services
 {
@@ -174,6 +175,42 @@ namespace StudyWire.Application.Services
 
             return school.Name;
 
+        }
+
+        public async Task<ReturnUserDto> CreateUserAsync(int choolId, int userId, RegisterUserDto dto)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null) throw new NotFoundException("User not found");
+
+            if (await UserExists(dto.Email)) throw new BadRequestException("Email is taken");
+            
+            var newUser = _mapper.Map<AppUser>(dto);
+            newUser.UserName = dto.Email;
+
+            if (user.SchoolId != null) newUser.SchoolId = user.SchoolId;
+
+            var result = await _userManager.CreateAsync(newUser, dto.Password);
+
+            if (!result.Succeeded)
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                foreach (var error in result.Errors)
+                {
+                    stringBuilder.Append(error.Description);
+                    stringBuilder.Append(" ");
+                }
+                var str = stringBuilder.ToString();
+                throw new BadRequestException(str);
+            }
+
+            var newUserDto = _mapper.Map<ReturnUserDto>(newUser);
+            return newUserDto;
+        }
+
+        private async Task<bool> UserExists(string email)
+        {
+            return await _userManager.Users.AnyAsync(x => x.NormalizedEmail == email.ToUpper());
         }
     }
 }

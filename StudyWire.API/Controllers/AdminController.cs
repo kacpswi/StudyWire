@@ -8,7 +8,7 @@ using StudyWire.Domain.Entities;
 
 namespace StudyWire.API.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     [ApiController]
     [Route("api/admin")]
     public class AdminController : ControllerBase
@@ -30,6 +30,7 @@ namespace StudyWire.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete-user/{id}")]
         public async Task<ActionResult> DeleteUser([FromRoute]int id)
         {
@@ -37,6 +38,7 @@ namespace StudyWire.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("users-with-roles")]
         public async Task<ActionResult> GetUsersWithRoles([FromQuery] PagedQuery query)
@@ -48,6 +50,7 @@ namespace StudyWire.API.Controllers
 
         [HttpPost]
         [Route("edit-roles/{userId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ReturnUserWithRoles>> EditRoles([FromRoute] int userId, [FromQuery] string roles)
         {
             var newRoles = await _adminService.EditUserRolesAsync(userId, roles);
@@ -56,10 +59,21 @@ namespace StudyWire.API.Controllers
 
         [HttpPost]
         [Route("edit-school/{userId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ReturnUserDto>> EditSchool([FromRoute] int userId, [FromQuery] string schoolId)
         {
             var newSchool = await _adminService.EditUserSchoolAsync(userId, schoolId);
             return Ok(new { Name = newSchool });
+        }
+
+        [HttpPost]
+        [Route("add-user")]
+        [Authorize(Roles = "Admin,School-Admin")]
+        public async Task<ActionResult<ReturnUserDto>> CreateUser([FromBody]RegisterUserDto dto, [FromQuery] int schoolId)
+        {
+            var userId = User.GetUserId();
+            var result = await _adminService.CreateUserAsync(schoolId, userId, dto);
+            return Created("", result);
         }
     }
 }
